@@ -16,7 +16,7 @@ def postear(request):
         author = userLogin['firstName'] + ' ' + userLogin['lastName']
         avatar = userLogin['urlAvatar']
         content = request.POST['content']
-        idPost = Post.addPost(author, avatar, content)
+        idPost = Post.addPost(author,userLogin['id'], userLogin['username'], avatar, content)
         if request.FILES:
             # Si hay archivos en la solicitud POST
             uploaded_file = request.FILES['media']

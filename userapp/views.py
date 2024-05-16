@@ -6,6 +6,7 @@ from django.http import JsonResponse
 import os
 
 from .models import DefaultUser
+from postapp.models import Post
 
 
 # Create your views here.
@@ -41,11 +42,17 @@ def viewProfile(request):
     userAuth = request.user
     userLogin = DefaultUser.getUserByUsername(userAuth.username)
     userData = DefaultUser.getUserByUsername(userAuth.username)
+    posts = Post.getPostsByAuthorId(userData['id'])
+    for post in posts:
+        if (userLogin['id'] in post['likesD']):
+            post['likeStatus'] = 'active'
+        else:
+            post['likeStatus'] = 'inactive'
     friendsData = []
     for i in userLogin['friends']:
         friendData = DefaultUser.getUserByUsername(i)
         friendsData.append(friendData)
-    return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData})
+    return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
 
 
 

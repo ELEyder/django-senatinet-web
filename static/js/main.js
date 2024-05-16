@@ -9,7 +9,7 @@ function like(button){
     likes += isActive ? -1 : 1;
     button.setAttribute('likes', likes);
     button.innerText = `Likes: ${likes}`;
-
-	fetch(`post/like/${idPost}`)
+    const dominioBase = window.location.origin;
+	fetch(`${dominioBase}/post/like/${idPost}`)
 	return false;
 }

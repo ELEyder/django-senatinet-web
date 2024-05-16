@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/user/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/post/post.css' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <title>{{ userLogin.firstName }} {{ userLogin.lastName }}</title>
 </head>
@@ -16,10 +17,9 @@
             <div class="avatar">
                 <img src="{{ userData.urlAvatar }}" alt="avatar" class="avatar">
             </div>
-            <h1>{{ userData.firstName }} {{ userData.lastName }}</h1>
+            <h1>{{ userData.firstName }} {{ userData.lastName }} ({{ userData.nicknames.0 }})</h1>
             <h2>@{{ userData.username }}</h2>
             <p>{{ userData.email }}</p>
-            <p>{{ userData.nicknames.0 }}</p>
             <p>Friends:</p>
             {% for friend in friendsData %}
                 <div class="avatar-icon">
@@ -29,6 +29,33 @@
             {% endfor %}
             <p></p>
         </section>
+        <section class="posts">
+            {% for post in posts %}
+                <div class="post">
+                <div class="post-header">
+                    <div class="avatar-icon">
+                        <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
+                    </div>
+                    <div>
+                        <p class="post">{{ post.author }}</p>
+                        <p class="post">{{ post.date }}</p>
+                    </div>
+                </div>
+                <div class="post-main">
+                    <p class="content">{{ post.content }}</p>
+                </div>
+                <div class="post-media">
+                    <img src="{{ post.urlMedia }}" alt="" class="media">
+                </div>
+                <div class="post-options">
+                    <a class="btn-like {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>
+                    <a class="btn-post-option"href="#">Coments: {{ post.comments }}</a>
+                    <a class="btn-post-option"href="#">Searchs: {{ post.searchs }}</a>
+                </div>
+                </div>
+            {% endfor %}
+        </section>
     </main>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

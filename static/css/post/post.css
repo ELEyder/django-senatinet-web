@@ -1,10 +1,76 @@
-body {
+div.post {
+    margin-top: 20px;
+    width: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.212);
+}
+div.post-header{
+    padding: 15px;
+    background-color: #242526;
+    display: flex;
+    align-items: center;
+}
+div.post-main{
+    padding: 0px 15px 15px 15px;
+    background-color: #242526;
+}
+div.post-media {
+    display: flex;
+}
+img.media {
+    width: 100%;
+}
+.post-options {
+    background-color: #242526;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-form.configurar {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
+
+p.content {
+    margin: 0;
+    word-wrap: break-word;
+}
+
+p.post {
+    margin: 0;
+    padding: 0;
+}
+
+
+.btn-post-option,
+.btn-like {
+    text-decoration: none;
+    color: #B0B3B8;
+    border-radius: 20px;
+    padding: 10px 20px 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+.btn-post-option:hover,
+.btn-post-option:focus,
+.btn-like:hover,
+.btn-like:focus {
+    background-color: #2c2d2e;
+
+}
+
+.inactive {
+    color: #B0B3B8;
+}
+
+.active {
+    color: #1468fa;
+}
+
+/* .active:hover,
+.active:focus{
+    background-color: #1468fa;
+    color: #E4E6EB;
+} */
+.like {
+    cursor: pointer;
 }

@@ -72,7 +72,7 @@ class DefaultUser():
             'friends': [],
             'lastAccess': dt,
             'lastName': lastName,
-            'nicknames' : [],
+            'nicknames' : [userName],
             'number': 'Sin registros',
             'password': password,
             'state': 'Desconectado',
