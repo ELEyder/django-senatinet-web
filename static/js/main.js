@@ -10,12 +10,6 @@ function like(button){
     button.setAttribute('likes', likes);
     button.innerText = `Likes: ${likes}`;
 
-	fetch(`/like/${idPost}`)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log('Error:', error);
-        });
+	fetch(`post/like/${idPost}`)
 	return false;
 }

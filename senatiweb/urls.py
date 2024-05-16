@@ -21,18 +21,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .views import *
-from postapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', index, name='home'),
-    path('', index, name='home'),
-    path('logout/', exit, name='exit'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', login, name='signup'),
+    path('', index, name='home'),
+    path('home/', index, name='home'),
     path('user/', include('userapp.urls')),
-    path('postear/', postear, name='postear'),
-    path('like/<str:id_post>/', like, name='like'),
+    path('post/', include('postapp.urls')),
+    path('logout/', exit, name='exit'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
