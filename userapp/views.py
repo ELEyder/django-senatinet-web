@@ -61,8 +61,14 @@ def viewUser(request, username):
     userAuth = request.user
     userLogin = DefaultUser.getUserByUsername(userAuth.username)
     userData = DefaultUser.getUserByUsername(username)
+    posts = Post.getPostsByAuthorId(userData['id'])
+    for post in posts:
+        if (userLogin['id'] in post['likesD']):
+            post['likeStatus'] = 'active'
+        else:
+            post['likeStatus'] = 'inactive'
     friendsData = []
     for i in userData['friends']:
         friendData = DefaultUser.getUserByUsername(i)
         friendsData.append(friendData)
-    return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData})
+    return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
