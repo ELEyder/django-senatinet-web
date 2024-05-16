@@ -7,6 +7,11 @@ main {
     color: #B0B3B8;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+a {
+    text-decoration: none;
+    color: #B0B3B8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 section.posts {
     display: flex;
     flex-direction: column;
@@ -40,7 +45,7 @@ div.usuario {
     align-items: center;
     margin-top: 20px;
 }
-p.usuario {
+a.usuario {
     width: 100%;
     margin: 0px;
     margin-right: 10px;

@@ -32,7 +32,7 @@
                         </div>
                     </a>
                     <div>
-                        <p class="post">{{ post.author }}</p>
+                        <a href="{% url 'viewUser' username=post.userAuthor %}" class="post">{{ post.author }}</a>
                         <p class="post">{{ post.date }}</p>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                             <img src="{{ user.urlAvatar }}" alt="avatar" class="avatar-icon">
                         </div>
                     </a>
-                    <p class="usuario">{{ user.firstName }} {{ user.lastName }}</p>
+                    <a href="{% url 'viewUser' username=user.username %}" class="usuario">{{ user.firstName }} {{ user.lastName }}</a>
                     <a href="#" class="btnAgregarAmigo" id="agregarAmigo">Agregar</a>
                 </div>
             {% endfor %}

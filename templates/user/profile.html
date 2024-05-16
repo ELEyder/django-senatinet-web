@@ -21,13 +21,19 @@
             <h2>@{{ userData.username }}</h2>
             <p>{{ userData.email }}</p>
             <p>Friends:</p>
+            <section class="my-friends">
             {% for friend in friendsData %}
-                <div class="avatar-icon">
-                    <img src="{{ friend.urlAvatar }}" alt="avatar" class="avatar-icon">
+
+            <a class="friend" href="{% url 'viewUser' username=friend.username %}">
+                <div class="friend">
+                    <div class="avatar-icon friend-icon">
+                        <img src="{{ friend.urlAvatar }}" alt="avatar" class="avatar-icon">
+                    </div>
+                    <p>{{ friend.firstName }} {{ friend.lastName }}</p>
                 </div>
-                <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+            </a>
             {% endfor %}
-            <p></p>
+            </section>
         </section>
         <section class="posts">
             {% for post in posts %}
@@ -37,7 +43,7 @@
                         <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
                     </div>
                     <div>
-                        <p class="post">{{ post.author }}</p>
+                        <a href="{% url 'viewUser' username=post.userAuthor %}" class="post">{{ post.author }}</a>
                         <p class="post">{{ post.date }}</p>
                     </div>
                 </div>

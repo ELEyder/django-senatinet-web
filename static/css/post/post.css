@@ -5,6 +5,11 @@ div.post {
     overflow: hidden;
     box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.212);
 }
+a {
+    text-decoration: none;
+    color: #B0B3B8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 div.post-header{
     padding: 15px;
     background-color: #242526;

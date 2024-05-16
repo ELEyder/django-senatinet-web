@@ -1,7 +1,12 @@
 {% load static %}
 <header>
     <a href="{% url 'home' %}">
-        <img src="{% static 'img/favicon.jpg' %}" alt="logo" class="logo">
+        <div class="home">
+            <div class="logo">
+                <img src="{% static 'img/favicon.jpg' %}" alt="avatar" class="logo">
+            </div>
+            <h1 class="logo">SENATINET</h1>
+        </div>
     </a>
     <div class="info-user">
         <!-- <div class="avatar" style="background-image: url('{{ userLogin.urlAvatar }}');"></div> -->
@@ -11,10 +16,10 @@
             </div>
          </a>
         <div>
-            <p class="user name">Bienvenido {{userLogin.firstName}} {{userLogin.lastName}}</p>
+            <p class="user name">Welcome {{userLogin.firstName}} {{userLogin.lastName}}</p>
             <p class="user email">{{userLogin.email}}</p>
         </div>
     </div>
-    <a class="postear" href="{% url 'userConfiguration' %}">Configuración</a>
-    <a class="postear" href="{% url 'exit' %}">Cerrar Sesión</a>
+    <a class="postear" href="{% url 'userConfiguration' %}">Settings</a>
+    <a class="postear" href="{% url 'exit' %}">Logout</a>
 </header>
