@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <title>Red Social</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <main>
+        <section class="posts">
+            <form action="{% url 'postear' %}" class="postear" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input class="content" type="text" name="content" placeholder="¿En que piensas?" required/>
+                <div>
+                    <label for="media" class="media">Seleccionar archivo</label>
+                    <input type="file" name="media" class="media" id="media" accept="image/jpeg" />
+                    <button type="submit" class="postear">Guardar</button>
+                </div>
+            </form>
+            {% for post in posts %}
+                <div class="post">
+                <div class="post-header">
+                    <div class="avatar-icon">
+                        <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
+                    </div>
+                    <div>
+                        <p class="post">{{ post.author }}</p>
+                        <p class="post">{{ post.date }}</p>
+                    </div>
+                </div>
+                <div class="post-main">
+                    <p class="content">{{ post.content }}</p>
+                </div>
+                <div class="post-media">
+                    <img src="{{ post.urlMedia }}" alt="" class="media">
+                </div>
+                <div class="post-options">
+                    <a class="btn-like {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>
+                    <a class="btn-post-option"href="">Coments: {{ post.comments }}</a>
+                    <a class="btn-post-option"href="">Searchs: {{ post.searchs }}</a>
+                </div>
+                </div>
+            {% endfor %}
+        </section>
+        <section class="usuarios">
+            Usuarios
+            {% for user in users %}
+                <div class="usuario">
+                    <a href="{% url 'viewUser' username=user.username %}">
+                        <div class="avatar-icon">
+                            <img src="{{ user.urlAvatar }}" alt="avatar" class="avatar-icon">
+                        </div>
+                    </a>
+                    <p class="usuario">{{ user.firstName }} {{ user.lastName }}</p>
+                    <a href="#" class="btnAgregarAmigo" id="agregarAmigo">Agregar</a>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/post/post.css' %}">
+    <title>Configurar</title>
+</head>
+<body>
+    <form class="configurar" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="">Content: </label>
+        <input type="" name="content" placeholder="¿En que piensas?" required/>
+        <label for="">Avatar: </label>
+        <input type="file" name="media" accept="image/jpeg" />
+        <button type="submit" class="btn">Guardar</button>
+    </form>
+</body>
+</html>

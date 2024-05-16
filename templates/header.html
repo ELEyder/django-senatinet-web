@@ -1,0 +1,20 @@
+{% load static %}
+<header>
+    <a href="{% url 'home' %}">
+        <img src="{% static 'img/favicon.jpg' %}" alt="logo" class="logo">
+    </a>
+    <div class="info-user">
+        <!-- <div class="avatar" style="background-image: url('{{ userLogin.urlAvatar }}');"></div> -->
+        <a href="{% url 'viewProfile' %}">
+            <div class="avatar-icon">
+                <img src="{{ userLogin.urlAvatar }}" alt="avatar" class="avatar-icon">
+            </div>
+         </a>
+        <div>
+            <p class="user name">Bienvenido {{userLogin.firstName}} {{userLogin.lastName}}</p>
+            <p class="user email">{{userLogin.email}}</p>
+        </div>
+    </div>
+    <a class="postear" href="{% url 'userConfiguration' %}">Configuración</a>
+    <a class="postear" href="{% url 'exit' %}">Cerrar Sesión</a>
+</header>

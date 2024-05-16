@@ -1,0 +1,78 @@
+html {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+body {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+header {
+    height: 70px;
+    width: 100%;
+    background-color: #242526;
+    display: flex;
+    align-items:  center;
+    justify-content: center;
+    position: fixed;
+    border-bottom: 1px solid #393a3b;
+}
+
+img.logo {
+    width: 50px;
+    border-radius: 50%;
+}
+div.info-user {
+    margin-left: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div.avatar-icon {
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+img.avatar-icon {
+    width: auto;
+    height: 50px;
+}
+p.user {
+    color: white;
+    margin: 2px;
+    padding: 0;
+}
+
+a.postear {
+    color: white;
+    background-color: #1468fa;
+    text-decoration: none;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+main {
+    padding-top: 70px;
+}
+
+::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #2c2c2c; /* Color de fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #9f9f9f; /* Color del "pulgarcito" de la barra de desplazamiento */
+    border-radius: 5px; /* Bordes redondeados */
+}

@@ -1,0 +1,26 @@
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.avatar {
+    width: 200px;
+    min-width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+img.avatar {
+    width: auto;
+    height: 200px;
+}
+
+section.profile {
+    padding: 20px;
+}

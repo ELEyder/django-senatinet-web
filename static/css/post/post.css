@@ -1,0 +1,10 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+form.configurar {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
