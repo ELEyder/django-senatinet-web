@@ -1,26 +1,21 @@
-async function like(button){
+function like(button){
 	var idPost = button.getAttribute('id-post')
-	var likes = button.getAttribute('likes')
-	likes = parseInt(likes)
-	try{
-		var nya = await fetch(`/like/${idPost}`)
-		console.log(nya)
-	}
-	catch(error){
-		console.log('Error:', error)
-	} 
+	var likes = parseInt(button.getAttribute('likes'))
+	var isActive = button.classList.contains("active");
 
-	if (button.classList.contains("active")) {
-		button.classList.remove("active");
-		button.classList.add("inactive");
-		likes -= 1
-		button.setAttribute('likes', likes)
-		button.innerText = "Likes: " + likes;
-	} else {
-		button.classList.remove("inactive");
-		button.classList.add("active");
-		likes += 1
-		button.setAttribute('likes', likes)
-		button.innerText = "Likes: " + likes;
-	}
+    button.classList.toggle("active", !isActive);
+    button.classList.toggle("inactive", isActive);
+
+    likes += isActive ? -1 : 1;
+    button.setAttribute('likes', likes);
+    button.innerText = `Likes: ${likes}`;
+
+	fetch(`/like/${idPost}`)
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+	return false;
 }
