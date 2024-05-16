@@ -1,9 +1,8 @@
-from django.db import models
+# from django.db import models
 from django.conf import settings
 from datetime import datetime
 from firebase_admin import firestore
 from shutil import copy
-
 import os
 
 db = firestore.client()

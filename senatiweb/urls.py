@@ -21,7 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .views import *
-from userapp.views import *
 from postapp.views import *
 
 urlpatterns = [
@@ -31,9 +30,7 @@ urlpatterns = [
     path('logout/', exit, name='exit'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', login, name='signup'),
-    path('user/configuration', userConfiguration, name='userConfiguration'),
-    path('user/profile', viewProfile, name='viewProfile'),
-    path('user/@<str:username>', viewUser, name='viewUser'),
+    path('user/', include('userapp.urls')),
     path('postear/', postear, name='postear'),
     path('like/<str:id_post>/', like, name='like'),
 ]
