@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
-from django.contrib.auth.decorators import login_required
+from senatiweb.decorators import firebase_login_required
 from django.http import HttpResponse
 
 import os
@@ -10,15 +10,11 @@ from postapp.models import Post
 
 
 # Create your views here.
-@login_required
+@firebase_login_required
 def userConfiguration(request):
-    userAuth = request.user
-    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     if request.method == "POST":
-        userAuth.first_name = request.POST['firstName']
-        userAuth.last_name = request.POST['lastName']
-        userAuth.email = request.POST['email']
-        userAuth.save()
         if request.FILES:
             # Si hay archivos en la solicitud POST
             # Cambiar Foto de perfil
@@ -40,10 +36,10 @@ def userConfiguration(request):
             urlAvatar = fs.url(name)
             
             # Publicar sobre tu cambio de perfil
-            author = userLogin['firstName'] + ' ' + userLogin['lastName']
-            avatar = userLogin['urlAvatar']
-            content = '¡He actualizado mi foto de perfil!'
-            idPost = Post.addPost(author,userLogin['id'], userLogin['username'], avatar, content)
+            author = userLogin['id']
+            action = 'ha actualizado su foto de perfil'
+            content = ''
+            idPost = Post.addPost(author, action, content)
             if '.jpg' in uploaded_file.name:
                 location = os.path.join('posts', userLogin['id'] + '.jpg')
                 if fs.exists(location):
@@ -66,10 +62,10 @@ def userConfiguration(request):
         return render(request, "user/configuration.html", { 'userLogin':userLogin})
 
 
-@login_required
+@firebase_login_required
 def viewProfile(request):
-    userAuth = request.user
-    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     userData = DefaultUser.getUserByUsername(userAuth.username)
     posts = Post.getPostsByAuthorId(userData['id'])
     for post in posts:
@@ -85,10 +81,10 @@ def viewProfile(request):
 
 
 
-@login_required
+@firebase_login_required
 def viewUser(request, username):
-    userAuth = request.user
-    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     userData = DefaultUser.getUserByUsername(username)
     posts = Post.getPostsByAuthorId(userData['id'])
     for post in posts:
@@ -103,10 +99,10 @@ def viewUser(request, username):
     return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
 
 
-@login_required
+@firebase_login_required
 def friendRequest(request, idUser):
-    userAuth = request.user
-    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     futureFriend = DefaultUser.getUserById(idUser)
     if idUser in userLogin['friendRequestR']:
         DefaultUser.acceptFriendRequest(userLogin['id'], idUser)

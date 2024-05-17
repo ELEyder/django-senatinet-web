@@ -59,7 +59,7 @@ class DefaultUser():
 
     # Añade un usuario
     @staticmethod
-    def addUser(userName, firstName, lastName, email, password):
+    def addUser(id, userName, firstName, lastName, email, password):
         dt = datetime.now()
 
         data = {
@@ -82,12 +82,12 @@ class DefaultUser():
             'username': userName,
             'works': [],
         }
-        doc = db.collection('users').add(data)
-        doc_ref = db.collection('users').document(doc[1].id)
+        doc_ref = db.collection('users').document(id)
+        doc_ref.set(data)
         ruta_original = os.path.join(settings.MEDIA_ROOT, 'avatars', '0.jpg')
-        nueva_ruta = os.path.join(settings.MEDIA_ROOT, 'avatars', doc[1].id + '.jpg')
+        nueva_ruta = os.path.join(settings.MEDIA_ROOT, 'avatars', id + '.jpg')
         doc_ref.update({
-            'urlAvatar' : '/media/avatars/' + doc[1].id + '.jpg'
+            'urlAvatar' : '/media/avatars/' + id + '.jpg'
         })
         copy(ruta_original, nueva_ruta)
 

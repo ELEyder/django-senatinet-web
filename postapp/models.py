@@ -6,13 +6,11 @@ db = firestore.client()
 # Create your models here.
 class Post():
     @staticmethod
-    def addPost(author, idAuthor, userAuthor, authorAvatar, content):
+    def addPost(author, action, content):
         date = datetime.now()
         data = {
             'author': author,
-            'idAuthor': idAuthor,
-            'userAuthor': userAuthor,
-            'authorAvatar': authorAvatar,
+            'action': action,
             'date' : date,
             'content': content,
             'urlMedia': '',
@@ -35,10 +33,18 @@ class Post():
     @staticmethod
     def getPosts():
         posts_ref = db.collection('posts')
+        users_ref = db.collection('users')
         posts_docs = posts_ref.get()
+        users_docs = users_ref.get()
         posts_data = []
         for doc in posts_docs:
             post_data = doc.to_dict()
+            for docUser in users_docs:
+                if docUser.id == post_data['author']:
+                    data = docUser.to_dict()
+                    post_data['authorName'] = data['firstName'] + ' ' + data['lastName']
+                    post_data['authorUsername'] = data['username']
+                    post_data['authorAvatar'] = data['urlAvatar']
             post_data['id'] = doc.id
             posts_data.append(post_data)
         return posts_data

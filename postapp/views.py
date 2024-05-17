@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth.decorators import login_required
+from senatiweb.decorators import firebase_login_required
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 
@@ -8,15 +8,15 @@ from postapp.models import Post
 from userapp.models import DefaultUser
 import os
 # Create your views here.
-@login_required
+@firebase_login_required
 def postear(request):
-    userAuth = request.user
-    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     if request.method == "POST":
-        author = userLogin['firstName'] + ' ' + userLogin['lastName']
-        avatar = userLogin['urlAvatar']
+        author = userLogin['id']
         content = request.POST['content']
-        idPost = Post.addPost(author,userLogin['id'], userLogin['username'], avatar, content)
+        action = ''
+        idPost = Post.addPost(author, action, content)
         if request.FILES:
             # Si hay archivos en la solicitud POST
 
@@ -45,16 +45,15 @@ def postear(request):
             urlMedia = fs.url(name)
             Post.updatePost(idPost, content, urlMedia, typeMedia)
 
-        
         return redirect('home')
     else: 
         return render(request, "post/post.html")
 
-@login_required
+@firebase_login_required
 def like(request, id_post):
-    username = request.user.username
+    idAuth = request.session.get('user_id')
+    userLogin = DefaultUser.getUserById(idAuth)
     post = Post.getPostById(id_post)
-    user = DefaultUser.getUserByUsername(username)
     if (user['id'] in post['likesD']):
         likes = int(post['likes']) - 1
         Post.updateLike(id_post, user['id'], likes, -1)
