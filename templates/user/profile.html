@@ -17,10 +17,10 @@
             <div class="avatar">
                 <img src="{{ userData.urlAvatar }}" alt="avatar" class="avatar">
             </div>
-            <h1>{{ userData.firstName }} {{ userData.lastName }} ({{ userData.nicknames.0 }})</h1>
-            <h2>@{{ userData.username }}</h2>
-            <p>{{ userData.email }}</p>
-            <p>Friends:</p>
+            <h1 class="profile">{{ userData.firstName }} {{ userData.lastName }} ({{ userData.nicknames.0 }})</h1>
+            <h2 class="profile">@{{ userData.username }}</h2>
+            <p class="profile">{{ userData.email }}</p>
+            <p class="profile">Friends:</p>
             <section class="my-friends">
             {% for friend in friendsData %}
 
@@ -51,7 +51,15 @@
                     <p class="content">{{ post.content }}</p>
                 </div>
                 <div class="post-media">
-                    <img src="{{ post.urlMedia }}" alt="" class="media">
+                    {% if post.typeMedia == 'img' %}
+                        <img src="{{ post.urlMedia }}" alt="" class="media">
+                    {% elif post.typeMedia == 'video' %}
+                        <video controls class="media">
+                            <source class="media" src="{{ post.urlMedia }}" type="video/mp4">
+                            <source class="media" src="{{ post.urlMedia }}" type="video/avi">
+                            Tu navegador no soporta la reproducción de videos.
+                        </video>
+                    {% endif %}
                 </div>
                 <div class="post-options">
                     <a class="btn-like {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>

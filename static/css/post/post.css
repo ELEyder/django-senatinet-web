@@ -23,7 +23,7 @@ div.post-main{
 div.post-media {
     display: flex;
 }
-img.media {
+.media {
     width: 100%;
 }
 .post-options {

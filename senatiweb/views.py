@@ -17,6 +17,16 @@ def index(request):
             post['likeStatus'] = 'active'
         else:
             post['likeStatus'] = 'inactive'
+    for userG in users:
+        if (userLogin['id'] in userG['friendRequestR']):
+            userG['fStatus'] = 'Cancel'
+        elif (userLogin['id'] in userG['friendRequestS']):
+            userG['fStatus'] = 'Accept'
+        elif (userLogin['id'] in userG['friends']):
+            userG['fStatus'] = 'View'
+        else:
+            userG['fStatus'] = 'Send'
+
         
     return render(request, "index.html", {'users':users, 'userLogin':userLogin, 'posts':posts})
 

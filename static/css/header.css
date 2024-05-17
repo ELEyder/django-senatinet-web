@@ -25,6 +25,7 @@ header {
     justify-content: center;
     position: fixed;
     border-bottom: 1px solid #393a3b;
+    z-index: 10; /* Z-index más bajo */
 }
 div.home {
     display: flex;
@@ -43,9 +44,9 @@ img.logo {
     height: 50px;
 
 }
-/* h1.logo {
-
-} */
+h1.logo {
+    margin: 0px;
+}
 div.info-user {
     margin-left: 30%;
     display: flex;
@@ -53,6 +54,7 @@ div.info-user {
     justify-content: center;
 }
 div.avatar-icon {
+    background-color: black;
     width: 50px;
     min-width: 50px;
     height: 50px;

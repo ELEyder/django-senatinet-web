@@ -11,6 +11,7 @@ section.posts {
     margin-left: 30px;
 }
 div.avatar {
+    background-color: black;
     width: 200px;
     min-width: 200px;
     height: 200px;
@@ -29,7 +30,7 @@ section.profile {
     padding: 20px;
 }
 
-h1, h2, p{
+h1.profile, h2.profile, p.profile{
     text-decoration: none;
     color: #B0B3B8;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

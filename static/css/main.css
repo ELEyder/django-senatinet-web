@@ -56,6 +56,8 @@ a.usuario {
     text-decoration: none;
     padding: 10px 15px 10px 15px;
     border-radius: 10px;
+    border: 0px solid transparent;
+    cursor: pointer;
 }
 
 form.postear {

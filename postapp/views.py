@@ -20,13 +20,26 @@ def postear(request):
         if request.FILES:
             # Si hay archivos en la solicitud POST
             uploaded_file = request.FILES['media']
-            location = os.path.join('posts', idPost + '.jpg')
             fs = FileSystemStorage()
-            if fs.exists(location):
-                os.remove('media/posts/' + idPost + '.jpg')
+            typeMedia = 'img'
+            if '.jpg' in uploaded_file.name:
+                location = os.path.join('posts', idPost + '.jpg')        
+                if fs.exists(location):
+                    os.remove('media/posts/' + idPost + '.jpg')
+            elif '.gif' in uploaded_file.name:
+                location = os.path.join('posts', idPost + '.gif')        
+                if fs.exists(location):
+                    os.remove('media/posts/' + idPost + '.gif')
+            elif '.mp4' in uploaded_file.name:
+                location = os.path.join('posts', idPost + '.mp4')        
+                if fs.exists(location):
+                    os.remove('media/posts/' + idPost + '.mp4')
+                typeMedia = 'video'
+            else:
+                return redirect('home')  
             name = fs.save(location, uploaded_file)
             urlMedia = fs.url(name)
-            Post.updatePost(idPost, content, urlMedia)
+            Post.updatePost(idPost, content, urlMedia, typeMedia)
 
         
         return redirect('home')

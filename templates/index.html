@@ -19,7 +19,7 @@
                 <input class="content" type="text" name="content" placeholder="¿En que piensas?" required/>
                 <div>
                     <label for="media" class="media">Seleccionar archivo</label>
-                    <input type="file" name="media" class="media" id="media" accept="image/jpeg" />
+                    <input type="file" name="media" class="media" id="media" accept=".jpg, .gif, .mp4" />
                     <button type="submit" class="postear">Guardar</button>
                 </div>
             </form>
@@ -40,7 +40,15 @@
                     <p class="content">{{ post.content }}</p>
                 </div>
                 <div class="post-media">
-                    <img src="{{ post.urlMedia }}" alt="" class="media">
+                    {% if post.typeMedia == 'img' %}
+                        <img src="{{ post.urlMedia }}" alt="" class="media">
+                    {% elif post.typeMedia == 'video' %}
+                        <video controls class="media">
+                            <source class="media" src="{{ post.urlMedia }}" type="video/mp4">
+                            <source class="media" src="{{ post.urlMedia }}" type="video/avi">
+                            Tu navegador no soporta la reproducción de videos.
+                        </video>
+                    {% endif %}
                 </div>
                 <div class="post-options">
                     <a class="btn-like {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>
@@ -60,7 +68,7 @@
                         </div>
                     </a>
                     <a href="{% url 'viewUser' username=user.username %}" class="usuario">{{ user.firstName }} {{ user.lastName }}</a>
-                    <a href="#" class="btnAgregarAmigo" id="agregarAmigo">Agregar</a>
+                    <button class="btnAgregarAmigo {{ user.fStatus }}" state="{{ user.fStatus }}" username="{{ user.username }}" idUser="{{ user.id }}" onClick="sendRequest(this)">{{ user.fStatus }}</button>
                 </div>
             {% endfor %}
         </section>

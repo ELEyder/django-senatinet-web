@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponse
 
 import os
 
@@ -50,7 +50,7 @@ def viewProfile(request):
             post['likeStatus'] = 'inactive'
     friendsData = []
     for i in userLogin['friends']:
-        friendData = DefaultUser.getUserByUsername(i)
+        friendData = DefaultUser.getUserById(i)
         friendsData.append(friendData)
     return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
 
@@ -69,6 +69,22 @@ def viewUser(request, username):
             post['likeStatus'] = 'inactive'
     friendsData = []
     for i in userData['friends']:
-        friendData = DefaultUser.getUserByUsername(i)
+        friendData = DefaultUser.getUserById(i)
         friendsData.append(friendData)
     return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
+
+
+@login_required
+def friendRequest(request, idUser):
+    userAuth = request.user
+    userLogin = DefaultUser.getUserByUsername(userAuth.username)
+    futureFriend = DefaultUser.getUserById(idUser)
+    if idUser in userLogin['friendRequestR']:
+        DefaultUser.acceptFriendRequest(userLogin['id'], idUser)
+        return HttpResponse("¡Ahora son amigos!")
+    elif idUser in userLogin['friendRequestS']:
+        DefaultUser.deleteFriendRequestR(userLogin['id'], idUser)
+        return HttpResponse("¡Solicitud eliminada!")
+    else:
+        msg = DefaultUser.sendFriendRequest(userLogin['id'] ,idUser)
+        return HttpResponse(msg)

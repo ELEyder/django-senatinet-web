@@ -16,6 +16,7 @@ class Post():
             'date' : date,
             'content': content,
             'urlMedia': '',
+            'typeMedia': '',
             'likes': 0,
             'likesD': [],
             'comments': 0,
@@ -64,11 +65,12 @@ class Post():
         return posts_data
     
     @staticmethod
-    def updatePost(id_post, content, urlMedia):
+    def updatePost(id_post, content, urlMedia, typeMedia):
         post_ref = db.collection("posts").document(id_post)
         data = {
             'content': content,
             'urlMedia': urlMedia,
+            'typeMedia': typeMedia,
         }
         post_ref.update(data)
     

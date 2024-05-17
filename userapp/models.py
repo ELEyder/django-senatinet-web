@@ -3,6 +3,7 @@ from django.conf import settings
 from datetime import datetime
 from firebase_admin import firestore
 from shutil import copy
+
 import os
 
 db = firestore.client()
@@ -103,4 +104,48 @@ class DefaultUser():
         }
         usuario_ref.update(data)
 
+    @staticmethod
+    def deleteFriendRequestR(idUser, idDelete):
+        user_ref = db.collection("users").document(idUser)
+        user_ref.update({
+            'friendRequestR': firestore.ArrayRemove([idDelete])
+        })
+
+    @staticmethod
+    def acceptFriendRequest(idfriend1, idfriend2):
+        friend1 = db.collection("users").document(idfriend1)
+        friend2 = db.collection("users").document(idfriend2)
+        friend1.update({
+            'friendRequestR': firestore.ArrayRemove([idfriend2]),
+            'friendRequestS': firestore.ArrayRemove([idfriend2]),
+            'friends': firestore.ArrayUnion([idfriend2])
+
+        })
+        friend2.update({
+            'friendRequestR': firestore.ArrayRemove([idfriend1]),
+            'friendRequestS': firestore.ArrayRemove([idfriend1]),
+            'friends': firestore.ArrayUnion([idfriend1])
+        })
+
+    
+    @staticmethod
+    def sendFriendRequest(idSend, idReceive):
+        send = db.collection("users").document(idSend)
+        receive = db.collection("users").document(idReceive)
+        doc = send.get()
+        sendData = doc.to_dict()
+        sendFriends = sendData.get('friends')
+        sendFriendRequestR = sendData.get('friendRequestR')
+        if idReceive in sendFriends:
+            return 'Ellos ya son amigos'
+        if idReceive in sendFriendRequestR:
+            cls.acceptFriendRequest(idSend, idReceive)
+            return 'Ahora son amigos'
+        send.update({
+            'friendRequestS': firestore.ArrayUnion([idReceive])
+        })
+        receive.update({
+            'friendRequestR': firestore.ArrayUnion([idSend]),
+        })
+        return 'Solicitud Enviada'
 
