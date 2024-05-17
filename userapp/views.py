@@ -21,13 +21,42 @@ def userConfiguration(request):
         userAuth.save()
         if request.FILES:
             # Si hay archivos en la solicitud POST
-            uploaded_file = request.FILES['avatar']
-            location = os.path.join('avatars', userLogin['id'] + '.jpg')
+            # Cambiar Foto de perfil
             fs = FileSystemStorage()
-            if fs.exists(location):
-                os.remove('media/avatars/' + userLogin['id'] + '.jpg')
+            typeMedia = 'img'
+            uploaded_file = request.FILES['avatar']
+
+            if '.jpg' in uploaded_file.name:
+                location = os.path.join('avatars', userLogin['id'] + '.jpg')
+                if fs.exists(location):
+                    os.remove('media/avatars/' + userLogin['id'] + '.jpg')
+            elif '.gif' in uploaded_file.name:
+                location = os.path.join('avatars', userLogin['id'] + '.gif')
+                if fs.exists(location):
+                    os.remove('media/avatars/' + userLogin['id'] + '.gif')
+            else:
+                return redirect('home')
             name = fs.save(location, uploaded_file)
             urlAvatar = fs.url(name)
+            
+            # Publicar sobre tu cambio de perfil
+            author = userLogin['firstName'] + ' ' + userLogin['lastName']
+            avatar = userLogin['urlAvatar']
+            content = '¡He actualizado mi foto de perfil!'
+            idPost = Post.addPost(author,userLogin['id'], userLogin['username'], avatar, content)
+            if '.jpg' in uploaded_file.name:
+                location = os.path.join('posts', userLogin['id'] + '.jpg')
+                if fs.exists(location):
+                    os.remove('media/posts/' + userLogin['id'] + '.jpg')
+            elif '.gif' in uploaded_file.name:
+                location = os.path.join('posts', userLogin['id'] + '.gif')
+                if fs.exists(location):
+                    os.remove('media/posts/' + userLogin['id'] + '.gif')
+            else:
+                return redirect('home')
+            name = fs.save(location, uploaded_file)
+            urlMedia = fs.url(name)
+            Post.updatePost(idPost, content, urlMedia, 'img')
         else:
             urlAvatar = userLogin['urlAvatar']
         

@@ -19,17 +19,21 @@ def postear(request):
         idPost = Post.addPost(author,userLogin['id'], userLogin['username'], avatar, content)
         if request.FILES:
             # Si hay archivos en la solicitud POST
+
             uploaded_file = request.FILES['media']
             fs = FileSystemStorage()
             typeMedia = 'img'
+
             if '.jpg' in uploaded_file.name:
                 location = os.path.join('posts', idPost + '.jpg')        
                 if fs.exists(location):
                     os.remove('media/posts/' + idPost + '.jpg')
+
             elif '.gif' in uploaded_file.name:
                 location = os.path.join('posts', idPost + '.gif')        
                 if fs.exists(location):
                     os.remove('media/posts/' + idPost + '.gif')
+                    
             elif '.mp4' in uploaded_file.name:
                 location = os.path.join('posts', idPost + '.mp4')        
                 if fs.exists(location):

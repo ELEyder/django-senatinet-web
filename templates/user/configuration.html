@@ -12,7 +12,7 @@
 <form class="configurar" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
         <label for="">Avatar: </label>
-        <input type="file" name="avatar" accept="image/jpeg" />
+        <input type="file" name="avatar" accept=".jpg, .gif" />
         <label for="">Nombre: </label>
         <input type="text" name="firstName" value="{{ userLogin.firstName }}" required>
         <label for="">Apellido: </label>
