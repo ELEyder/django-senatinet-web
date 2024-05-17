@@ -18,9 +18,9 @@
                 {% csrf_token %}
                 <input class="content" type="text" name="content" placeholder="¿En que piensas?" required/>
                 <div>
-                    <label for="media" class="media">Seleccionar archivo</label>
+                    <label for="media" class="media">Select media</label>
                     <input type="file" name="media" class="media" id="media" accept=".jpg, .gif, .mp4" />
-                    <button type="submit" class="postear">Guardar</button>
+                    <button type="submit" class="postear">Post</button>
                 </div>
             </form>
             {% for post in posts %}
@@ -59,7 +59,7 @@
             {% endfor %}
         </section>
         <section class="usuarios">
-            Usuarios
+            Users
             {% for user in users %}
                 <div class="usuario">
                     <a href="{% url 'viewUser' username=user.username %}">
