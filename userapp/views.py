@@ -41,13 +41,13 @@ def userConfiguration(request):
             content = ''
             idPost = Post.addPost(author, action, content)
             if '.jpg' in uploaded_file.name:
-                location = os.path.join('posts', idPost + '.jpg')
-                if fs.exists(location):
-                    os.remove('media/posts/' + idPost + '.jpg')
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.jpg')
+                if os.path.exists(location):
+                    os.remove(location)
             elif '.gif' in uploaded_file.name:
-                location = os.path.join('posts', idPost + '.gif')
-                if fs.exists(location):
-                    os.remove('media/posts/' + idPost + '.gif')
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.gif')
+                if os.path.exists(location):
+                    os.remove(location)
             else:
                 return redirect('home')
             name = fs.save(location, uploaded_file)
