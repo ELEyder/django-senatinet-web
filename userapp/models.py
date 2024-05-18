@@ -59,7 +59,7 @@ class DefaultUser():
 
     # Añade un usuario
     @staticmethod
-    def addUser(id, userName, firstName, lastName, email, password):
+    def addUser(id, userName, firstName, lastName, email):
         dt = datetime.now()
 
         data = {
@@ -75,7 +75,6 @@ class DefaultUser():
             'lastName': lastName,
             'nicknames' : [userName],
             'number': 'Sin registros',
-            'password': password,
             'state': 'Desconectado',
             'studies': [],
             'urlAvatar': '/media/avatars/0.jpg',

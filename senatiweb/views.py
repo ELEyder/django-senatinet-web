@@ -83,7 +83,6 @@ def signup(request):
                 firstName=request.POST['firstname'],
                 lastName=request.POST['lastname'],
                 email=request.POST['email'],
-                password=request.POST['password1'],
             )
             return HttpResponse("Usuario Creado")
         except:
