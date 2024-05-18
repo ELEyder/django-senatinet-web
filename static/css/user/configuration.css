@@ -2,10 +2,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #18191a;
+    color: #B0B3B8;
     height: 100vh;
 }
 form.configurar {
     width: 200px;
     display: flex;
     flex-direction: column;
+}
+main {
+    padding-top: 70px;
+    display: flex;
+    justify-content: center;
+    background-color: #18191a;
+    text-decoration: none;
+    color: #B0B3B8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+a {
+    text-decoration: none;
+    color: #B0B3B8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
