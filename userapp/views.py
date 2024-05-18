@@ -66,7 +66,7 @@ def userConfiguration(request):
 def viewProfile(request):
     idAuth = request.session.get('user_id')
     userLogin = DefaultUser.getUserById(idAuth)
-    userData = DefaultUser.getUserByUsername(userAuth.username)
+    userData = DefaultUser.getUserByUsername(userLogin['username'])
     posts = Post.getPostsByAuthorId(userData['id'])
     for post in posts:
         if (userLogin['id'] in post['likesD']):

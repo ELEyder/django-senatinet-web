@@ -39,11 +39,13 @@
             {% for post in posts %}
                 <div class="post">
                 <div class="post-header">
-                    <div class="avatar-icon">
-                        <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
-                    </div>
+                    <a href="{% url 'viewUser' username=post.authorUsername %}">
+                        <div class="avatar-icon">
+                            <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
+                        </div>
+                    </a>
                     <div>
-                        <a href="{% url 'viewUser' username=post.userAuthor %}" class="post">{{ post.author }}</a>
+                        <a href="{% url 'viewUser' username=post.authorUsername %}" class="post">{{ post.authorName }} {{ post.action }}</a>
                         <p class="post">{{ post.date }}</p>
                     </div>
                 </div>

@@ -61,12 +61,20 @@ class Post():
     @staticmethod
     def getPostsByAuthorId(author_id):
         posts_ref = db.collection('posts')
+        users_ref = db.collection('users')
         posts_docs = posts_ref.get()
+        users_docs = users_ref.get()
         posts_data = []
         for doc in posts_docs:
             post_data = doc.to_dict()
+            for docUser in users_docs:
+                if docUser.id == post_data['author']:
+                    data = docUser.to_dict()
+                    post_data['authorName'] = data['firstName'] + ' ' + data['lastName']
+                    post_data['authorUsername'] = data['username']
+                    post_data['authorAvatar'] = data['urlAvatar']
             post_data['id'] = doc.id
-            if post_data['idAuthor'] == author_id:
+            if post_data['author'] == author_id:
                 posts_data.append(post_data)
         return posts_data
     
