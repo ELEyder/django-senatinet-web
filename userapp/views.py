@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from senatiweb.decorators import firebase_login_required
 from django.http import HttpResponse
-
+from django.conf import settings
 import os
 
 from .models import DefaultUser
@@ -23,13 +23,13 @@ def userConfiguration(request):
             uploaded_file = request.FILES['avatar']
 
             if '.jpg' in uploaded_file.name:
-                location = os.path.join('avatars', userLogin['id'] + '.jpg')
-                if fs.exists(location):
-                    os.remove('media/avatars/' + userLogin['id'] + '.jpg')
+                location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.jpg')
+                if os.path.exists(location):
+                    os.remove(location)
             elif '.gif' in uploaded_file.name:
-                location = os.path.join('avatars', userLogin['id'] + '.gif')
-                if fs.exists(location):
-                    os.remove('media/avatars/' + userLogin['id'] + '.gif')
+                location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.gif')
+                if os.path.exists(location):
+                    os.remove(location)
             else:
                 return redirect('home')
             name = fs.save(location, uploaded_file)
