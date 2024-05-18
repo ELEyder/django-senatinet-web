@@ -63,7 +63,10 @@ ROOT_URLCONF = 'senatiweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+            'templates',
+            '/home/eyder/senatinet-web/templates'
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
