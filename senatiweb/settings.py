@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-*7qf5ypa_+7su2!79-3h5ltk)*$aotu529kua@ud#^_@-uz^56
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [eyder.pythonanywhere.com]
 
 
 # Application definition
