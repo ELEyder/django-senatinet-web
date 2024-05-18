@@ -32,7 +32,7 @@
                         </div>
                     </a>
                     <div>
-                        <a href="{% url 'viewUser' username=post.authorUsername %}" class="post">{{ post.authorName }} - {{ post.action }}</a>
+                        <a href="{% url 'viewUser' username=post.authorUsername %}" class="post">{{ post.authorName }} {{ post.action }}</a>
                         <p class="post">{{ post.date }}</p>
                     </div>
                 </div>
