@@ -1,7 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as django_login
-from django.contrib.auth.models import User
 from userapp.models import DefaultUser
 from postapp.models import Post
 from .decorators import firebase_login_required
@@ -11,8 +8,8 @@ import os
 import pyrebase
 
 from dotenv import load_dotenv
-
 load_dotenv()
+
 firebase_config = {
     "apiKey": os.getenv("FIREBASE_API_KEY"),
     "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
@@ -27,8 +24,7 @@ firebase = pyrebase.initialize_app(firebase_config)
 
 @firebase_login_required
 def index(request):
-    idAuth = request.session.get('user_id')
-    userLogin = DefaultUser.getUserById(idAuth)
+    userLogin = DefaultUser.getUserById(request.session.get('user_id'))
     posts = Post.getPosts()
     users = DefaultUser.getUsersById(userLogin['id'])
     for post in posts:
@@ -58,8 +54,9 @@ def login(request):
             user = authentication.sign_in_with_email_and_password(email, password)
             request.session['user_id'] = user['localId']
             return redirect('home')
-        except ArithmeticError:
-            return render(request, 'registration/login.html')
+        except:
+            return HttpResponse("Credenciales incorrectas")
+
             
     return render(request, 'registration/login.html')
 

@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect, HttpResponse
 from senatiweb.decorators import firebase_login_required
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-
-
 from postapp.models import Post
 from userapp.models import DefaultUser
 import os
