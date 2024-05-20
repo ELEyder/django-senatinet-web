@@ -22,12 +22,11 @@ def userConfiguration(request):
         country = request.POST['country']
         phone = request.POST['phone']
         if request.FILES:
-            avatar = request.FILES['avatar']
-            rpta = DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone, avatar)
+            rpta = DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone, request.FILES['avatar'])
             author = idAuth
             action = 'ha actualizado su foto de perfil'
             content = ''
-            if rpta == 1: Post.addPost(author,action,content,avatar)
+            if rpta == 1: Post.addPost(author,action,content,request.FILES['avatar'])
         else:
             DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone)
         return redirect('home')
