@@ -22,11 +22,11 @@ def userConfiguration(request):
             typeMedia = 'img'
             uploaded_file = request.FILES['avatar']
 
-            if '.jpg' in uploaded_file.name:
+            if 'image/jpeg' in uploaded_file.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.jpg')
                 if os.path.exists(location):
                     os.remove(location)
-            elif '.gif' in uploaded_file.name:
+            elif 'image/gif' in uploaded_file.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.gif')
                 if os.path.exists(location):
                     os.remove(location)
@@ -40,16 +40,10 @@ def userConfiguration(request):
             action = 'ha actualizado su foto de perfil'
             content = ''
             idPost = Post.addPost(author, action, content)
-            if '.jpg' in uploaded_file.name:
+            if 'image/jpeg' in uploaded_file.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.jpg')
-                if os.path.exists(location):
-                    os.remove(location)
-            elif '.gif' in uploaded_file.name:
+            elif 'image/gif' in uploaded_file.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.gif')
-                if os.path.exists(location):
-                    os.remove(location)
-            else:
-                return redirect('home')
             name = fs.save(location, uploaded_file)
             urlMedia = fs.url(name)
             Post.updatePost(idPost, content, urlMedia, 'img')
