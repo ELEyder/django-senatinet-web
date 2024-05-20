@@ -1,4 +1,7 @@
 from firebase_admin import firestore
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import os
 from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
@@ -6,7 +9,8 @@ load_dotenv()
 db = firestore.client()
 class Post():
     @staticmethod
-    def addPost(author, action, content):
+    def addPost(author, action, content, media=None):
+        fs = FileSystemStorage()
         date = firestore.SERVER_TIMESTAMP
         data = {
             'author': author,
@@ -24,11 +28,28 @@ class Post():
             'privacy' : "Público",
             'privacyD' : []
         }
-        try:
-            doc = db.collection('posts').add(data)
-            return doc[1].id
-        except Exception as e:
-            print('Error al agregar el documento:', e)
+        doc = db.collection('posts').add(data)
+        id_post = doc[1].id
+        doc = db.collection('posts').document(id_post)
+        if media != None:
+            typeMedia = 'img'
+            if 'image/jpeg' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.jpg')
+            elif 'image/gif' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.gif')
+            elif 'video/mp4' in  media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.mp4')
+                typeMedia = 'video'
+            else:
+                return
+            name = fs.save(location, media)
+            urlMedia = fs.url(name)
+            data = {
+                'urlMedia': urlMedia,
+                'typeMedia': typeMedia,
+            }
+            doc.update(data)
+        return
             
     @staticmethod
     def getPosts():
@@ -79,13 +100,8 @@ class Post():
     
     @staticmethod
     def updatePost(id_post, content, urlMedia, typeMedia):
-        post_ref = db.collection("posts").document(id_post)
-        data = {
-            'content': content,
-            'urlMedia': urlMedia,
-            'typeMedia': typeMedia,
-        }
-        post_ref.update(data)
+        return None
+
     
     @staticmethod
     def updateLike(id_post, id_user, likes, state):

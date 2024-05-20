@@ -3,6 +3,7 @@ from django.conf import settings
 from datetime import datetime
 from firebase_admin import firestore
 from shutil import copy
+from django.core.files.storage import FileSystemStorage
 
 import os
 
@@ -20,6 +21,7 @@ class DefaultUser():
             user_data['id'] = doc.id
             users_data.append(user_data)
         return users_data;
+    
     # Trae todos los usuarios menos el logueado mediante su id
     @staticmethod
     def getUsersById(user_id):
@@ -38,24 +40,19 @@ class DefaultUser():
     @staticmethod
     def getUserById(user_id):
         user_ref = db.collection('users').document(user_id)
-        try:
-            user_doc = user_ref.get().to_dict()
-            user_doc['id'] = user_id
-            return user_doc
-        except NotFound:
-            return None
+        user_doc = user_ref.get().to_dict()
+        user_doc['id'] = user_id
+        return user_doc
 
     # Trae un usuario por su username
     @staticmethod
     def getUserByUsername(username):
-        users_ref = db.collection('users')
-        users_docs = users_ref.get()
+        users_docs = db.collection('users').where("username","==", username).get()
         for doc in users_docs:
             user_data = doc.to_dict();
             user_data['id'] = doc.id
-            if user_data['username'] == username:
-                return user_data
-        return 0;
+            return user_data;
+        return None
 
     # Añade un usuario
     @staticmethod
@@ -71,10 +68,12 @@ class DefaultUser():
             'friendRequestR': [],
             'friendRequestS': [],
             'friends': [],
+            'posts' : 0,
+            'postsD' : [],
             'lastAccess': dt,
             'lastName': lastName,
             'nicknames' : [userName],
-            'number': 'Sin registros',
+            'phoneNumber': 'Sin registros',
             'state': 'Desconectado',
             'studies': [],
             'urlAvatar': '/media/avatars/0.jpg',
@@ -86,21 +85,41 @@ class DefaultUser():
         ruta_original = os.path.join(settings.MEDIA_ROOT, 'avatars', '0.jpg')
         nueva_ruta = os.path.join(settings.MEDIA_ROOT, 'avatars', id + '.jpg')
         doc_ref.update({
-            'urlAvatar' : '/media/avatars/' + id + '.jpg'
+            'urlAvatar' : nueva_ruta
         })
         copy(ruta_original, nueva_ruta)
 
-    def updateUser(id_user, address, country, firstName, lastName, number, urlAvatar):
+    def updateUser(id_user, firstName, lastName, address, country, phone, avatar=None):
         usuario_ref = db.collection("users").document(id_user)
         data = {
             'address': address,
             'country': country,
             'firstName': firstName,
             'lastName': lastName,
-            'number': number,
-            'urlAvatar': urlAvatar
+            'phoneNumber': phone
         }
         usuario_ref.update(data)
+
+        if avatar != None:
+            fs = FileSystemStorage()
+            if 'image/jpeg' in avatar.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'avatars', id_user + '.jpg')
+                if os.path.exists(location):
+                    os.remove(location)
+            elif 'image/gif' in avatar.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'avatars', id_user + '.gif')
+                if os.path.exists(location):
+                    os.remove(location)
+            else:
+                return 0
+            name = fs.save(location, avatar)
+            urlAvatar = fs.url(name)
+            data = {
+                'urlAvatar': urlAvatar
+            }
+            usuario_ref.update(data)
+        return 1
+
 
     @staticmethod
     def deleteFriendRequestR(idUser, idDelete):

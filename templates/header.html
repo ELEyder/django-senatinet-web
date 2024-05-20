@@ -10,7 +10,7 @@
     </a>
     <div class="info-user">
         <!-- <div class="avatar" style="background-image: url('{{ userLogin.urlAvatar }}');"></div> -->
-        <a href="{% url 'viewProfile' %}">
+        <a href="{% url 'viewUser' username=userLogin.username %}">
             <div class="avatar-icon">
                 <img src="{{ userLogin.urlAvatar }}" alt="avatar" class="avatar-icon">
             </div>

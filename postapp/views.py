@@ -14,38 +14,13 @@ def postear(request):
         author = userLogin['id']
         content = request.POST['content']
         action = ''
-        idPost = Post.addPost(author, action, content)
         if request.FILES:
-            # Si hay archivos en la solicitud POST
-
-            uploaded_file = request.FILES['media']
-            fs = FileSystemStorage()
-            typeMedia = 'img'
-
-            if '.jpg' in uploaded_file.name or '.png' in uploaded_file.name:
-                location = os.path.join('posts', idPost + '.jpg')        
-                if fs.exists(location):
-                    os.remove('media/posts/' + idPost + '.jpg')
-
-            elif '.gif' in uploaded_file.name:
-                location = os.path.join('posts', idPost + '.gif')        
-                if fs.exists(location):
-                    os.remove('media/posts/' + idPost + '.gif')
-                    
-            elif '.mp4' in uploaded_file.name:
-                location = os.path.join('posts', idPost + '.mp4')        
-                if fs.exists(location):
-                    os.remove('media/posts/' + idPost + '.mp4')
-                typeMedia = 'video'
-            else:
-                return redirect('home')  
-            name = fs.save(location, uploaded_file)
-            urlMedia = fs.url(name)
-            Post.updatePost(idPost, content, urlMedia, typeMedia)
-
+            media = request.FILES['media']
+            Post.addPost(author, action, content, media)
+            return redirect('home')
+        Post.addPost(author, action, content)
         return redirect('home')
-    else: 
-        return render(request, "post/post.html")
+    return redirect('home')
 
 @firebase_login_required
 def like(request, id_post):

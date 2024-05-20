@@ -14,43 +14,22 @@ from postapp.models import Post
 def userConfiguration(request):
     idAuth = request.session.get('user_id')
     userLogin = DefaultUser.getUserById(idAuth)
-    if request.method == "POST":
-        if request.FILES:
-            # Si hay archivos en la solicitud POST
-            # Cambiar Foto de perfil
-            fs = FileSystemStorage()
-            typeMedia = 'img'
-            uploaded_file = request.FILES['avatar']
 
-            if 'image/jpeg' in uploaded_file.content_type:
-                location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.jpg')
-                if os.path.exists(location):
-                    os.remove(location)
-            elif 'image/gif' in uploaded_file.content_type:
-                location = os.path.join(settings.MEDIA_ROOT, 'avatars', userLogin['id'] + '.gif')
-                if os.path.exists(location):
-                    os.remove(location)
-            else:
-                return redirect('home')
-            name = fs.save(location, uploaded_file)
-            urlAvatar = fs.url(name)
-            
-            # Publicar sobre tu cambio de perfil
-            author = userLogin['id']
+    if request.method == "POST":
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
+        address = request.POST['address']
+        country = request.POST['country']
+        phone = request.POST['phone']
+        if request.FILES:
+            avatar = request.FILES['avatar']
+            rpta = DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone, avatar)
+            author = idAuth
             action = 'ha actualizado su foto de perfil'
             content = ''
-            idPost = Post.addPost(author, action, content)
-            if 'image/jpeg' in uploaded_file.content_type:
-                location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.jpg')
-            elif 'image/gif' in uploaded_file.content_type:
-                location = os.path.join(settings.MEDIA_ROOT, 'posts', idPost + '.gif')
-            name = fs.save(location, uploaded_file)
-            urlMedia = fs.url(name)
-            Post.updatePost(idPost, content, urlMedia, 'img')
+            if rpta == 1: Post.addPost(author,action,content,avatar)
         else:
-            urlAvatar = userLogin['urlAvatar']
-        
-        DefaultUser.updateUser(userLogin['id'], request.POST['address'], request.POST['country'], request.POST['firstName'], request.POST['lastName'], request.POST['number'], urlAvatar)
+            DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone)
         return redirect('home')
     else:
         return render(request, "user/configuration.html", { 'userLogin':userLogin})
