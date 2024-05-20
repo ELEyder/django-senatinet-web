@@ -28,7 +28,7 @@ def userConfiguration(request):
             author = idAuth
             action = 'ha actualizado su foto de perfil'
             content = ''
-            if rpta == 1: Post.addPost(author,action,content,avatar2)
+            if rpta == 1: Post.addPost(author,action,content)
         else:
             DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone)
         return redirect('home')

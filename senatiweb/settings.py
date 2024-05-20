@@ -155,4 +155,5 @@ firebase_credentials_path = os.path.join(BASE_DIR, 'config', 'firebase_credentia
 cred = credentials.Certificate(firebase_credentials_path)
 firebase_admin.initialize_app(cred)
 
-#PYREBASE
+#Peso Archivos CACHE
+FILE_UPLOAD_MAX_MEMORY_SIZE = 15728640
