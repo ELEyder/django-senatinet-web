@@ -1,11 +1,13 @@
 from firebase_admin import firestore
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
 db = firestore.client()
 class Post():
     @staticmethod
     def addPost(author, action, content):
-        date = datetime.now()
+        date = firestore.SERVER_TIMESTAMP
         data = {
             'author': author,
             'action': action,
@@ -36,6 +38,7 @@ class Post():
         for doc in posts_docs:
             post_data = doc.to_dict()
             post_data['id'] = doc.id
+            post_data['date'] = post_data['date']
             for docUser in users_docs:
                 if docUser.id == post_data['author']:
                     data = docUser.to_dict()
