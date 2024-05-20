@@ -90,12 +90,11 @@ class DefaultUser():
         })
         copy(ruta_original, nueva_ruta)
 
-    def updateUser(id_user, address, country, email, firstName, lastName, number, urlAvatar):
+    def updateUser(id_user, address, country, firstName, lastName, number, urlAvatar):
         usuario_ref = db.collection("users").document(id_user)
         data = {
             'address': address,
             'country': country,
-            'email': email,
             'firstName': firstName,
             'lastName': lastName,
             'number': number,

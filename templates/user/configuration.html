@@ -12,25 +12,25 @@
 <form class="configurar" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
         <div>
-            <label for="avatar" class="avatar">Select media</label>
+            <label for="avatar" class="avatar">Select new avatar:</label>
             <input type="file" name="avatar" class="avatar" id="avatar" accept=".jpg, .gif" />
         </div>
-        <label for="">Nombre: </label>
+        <label for="">FirstName: </label>
         <input type="text" name="firstName" value="{{ userLogin.firstName }}" required>
-        <label for="">Apellido: </label>
+        <label for="">lastName: </label>
         <input type="text" name="lastName" value="{{ userLogin.lastName }}" required>
-        <label for="">Correo: </label>
+        <!-- <label for="">Correo: </label>
         <input type="email" name="email" value="{{ userLogin.email }}" required>
-        <div>
+        <div> -->
             <!-- {{ password_form.as_p }} -->
         </div>
-        <label for="">Dirección: </label>
+        <label for="">Address: </label>
         <input type="text" name="address" value="{{ userLogin.address }}" required>
-        <label for="">País: </label>
+        <label for="">Country: </label>
         <input type="text" name="country" value="{{ userLogin.country }}" required>
-        <label for="">Número: </label>
+        <label for="">Phone: </label>
         <input type="text" name="number" value="{{ userLogin.number}}" required>
-        <button type="submit" class="btn">Guardar</button>
+        <button type="submit" class="btn">Save</button>
     </form>
 </body>
 </html>

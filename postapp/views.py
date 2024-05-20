@@ -22,7 +22,7 @@ def postear(request):
             fs = FileSystemStorage()
             typeMedia = 'img'
 
-            if '.jpg' in uploaded_file.name:
+            if '.jpg' in uploaded_file.name or '.png' in uploaded_file.name:
                 location = os.path.join('posts', idPost + '.jpg')        
                 if fs.exists(location):
                     os.remove('media/posts/' + idPost + '.jpg')

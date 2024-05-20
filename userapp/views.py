@@ -56,7 +56,7 @@ def userConfiguration(request):
         else:
             urlAvatar = userLogin['urlAvatar']
         
-        DefaultUser.updateUser(userLogin['id'], request.POST['address'], request.POST['country'], request.POST['email'], request.POST['firstName'], request.POST['lastName'], request.POST['number'], urlAvatar)
+        DefaultUser.updateUser(userLogin['id'], request.POST['address'], request.POST['country'], request.POST['firstName'], request.POST['lastName'], request.POST['number'], urlAvatar)
         return redirect('home')
     else:
         return render(request, "user/configuration.html", { 'userLogin':userLogin})
