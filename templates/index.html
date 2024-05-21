@@ -1,14 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/post/post.css' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-    <title>Red Social</title>
+    <title>SENATINET</title>
 </head>
 <body>
     {% include 'header.html' %}
@@ -16,7 +16,7 @@
         <section class="posts">
             <form action="{% url 'postear' %}" class="postear" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input class="content" type="text" name="content" placeholder="¿En que piensas?" required/>
+                <input class="content" type="text" name="content" placeholder="¿En que piensas?" maxlength="1000" required/>
                 <div>
                     <label for="media" class="media">Select Photo, gif or video</label>
                     <input type="file" name="media" class="media" id="media" accept=".jpg, .gif, .mp4" />
@@ -24,12 +24,11 @@
                 </div>
             </form>
             {% for post in posts %}
-                <div class="post">
+            <div class="post">
                 <div class="post-header">
                     <a href="{% url 'viewUser' username=post.authorUsername %}">
                         <div class="avatar-icon">
-                            <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon">
-                        </div>
+                            <img src="{{ post.authorAvatar }}" alt="avatar" class="avatar-icon"></div>
                     </a>
                     <div>
                         <a href="{% url 'viewUser' username=post.authorUsername %}" class="post">{{ post.authorName }} {{ post.action }}</a>
@@ -55,7 +54,7 @@
                     <a class="btn-post-option"href="#">Coments: {{ post.comments }}</a>
                     <a class="btn-post-option"href="#">Searchs: {{ post.searchs }}</a>
                 </div>
-                </div>
+            </div>
             {% endfor %}
         </section>
         <section class="usuarios">

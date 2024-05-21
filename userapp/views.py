@@ -6,6 +6,7 @@ from django.conf import settings
 import os
 
 from .models import DefaultUser
+from senatiweb.models import Country
 from postapp.models import Post
 
 
@@ -14,6 +15,7 @@ from postapp.models import Post
 def userConfiguration(request):
     idAuth = request.session.get('user_id')
     userLogin = DefaultUser.getUserById(idAuth)
+    countries = Country.getCountries()
 
     if request.method == "POST":
         firstName = request.POST['firstName']
@@ -32,26 +34,7 @@ def userConfiguration(request):
             DefaultUser.updateUser(idAuth, firstName, lastName, address, country, phone)
         return redirect('home')
     else:
-        return render(request, "user/configuration.html", { 'userLogin':userLogin})
-
-
-@firebase_login_required
-def viewProfile(request):
-    idAuth = request.session.get('user_id')
-    userLogin = DefaultUser.getUserById(idAuth)
-    userData = DefaultUser.getUserByUsername(userLogin['username'])
-    posts = Post.getPostsByAuthorId(userData['id'])
-    for post in posts:
-        if (userLogin['id'] in post['likesD']):
-            post['likeStatus'] = 'active'
-        else:
-            post['likeStatus'] = 'inactive'
-    friendsData = []
-    for i in userLogin['friends']:
-        friendData = DefaultUser.getUserById(i)
-        friendsData.append(friendData)
-    return render(request, "user/profile.html", {'userLogin' : userLogin , 'friendsData' : friendsData, 'userData' : userData, 'posts' : posts})
-
+        return render(request, "user/configuration.html", { 'userLogin':userLogin ,  'countries':countries })
 
 
 @firebase_login_required

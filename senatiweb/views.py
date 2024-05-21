@@ -58,7 +58,7 @@ def login(request):
             return HttpResponse("Credenciales incorrectas")
 
             
-    return render(request, 'registration/login.html')
+    return render(request, 'user/login.html')
 
 
 def signup(request):
