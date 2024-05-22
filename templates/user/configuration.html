@@ -23,12 +23,15 @@
         <input type="email" name="email" value="{{ userLogin.email }}" required>
         <div> -->
             <!-- {{ password_form.as_p }} -->
-        <select name="countries" id="">
-            <option value="{{country.name}}">
-                <p>Sin especificar</p>
-            </option>
+        <label for="">Country: </label>
+        <select name="country" id="">
             {% for country in countries %}
-            <option value="{{country.name}}">
+            {% if country.name|capfirst == userLogin.country %}
+            <option name="{{country.name}}" selected>
+                {{country.name|capfirst}}
+            </option>
+            {% endif %}
+            <option name="{{country.name}}">
                 {{country.name|capfirst}}
             </option>
             {% endfor %}
@@ -36,8 +39,6 @@
         <img src="https://www.countryflags.com/wp-content/uploads/{{country.name}}-flag-png-large.png" style="width: 10px;" alt="">
         <label for="">Address: </label>
         <input type="text" name="address" value="{{ userLogin.address }}" required>
-        <label for="">Country: </label>
-        <input type="text" name="country" value="{{ userLogin.country }}" required>
         <label for="">Phone: </label>
         <input type="text" name="phone" value="{{ userLogin.phoneNumber}}" required>
         <button type="submit" class="btn">Save</button>

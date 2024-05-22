@@ -12,13 +12,13 @@ a {
 }
 div.post-header{
     padding: 15px;
-    background-color: #242526;
+    background-color: #1C1E1F;
     display: flex;
     align-items: center;
 }
 div.post-main{
     padding: 0px 15px 15px 15px;
-    background-color: #242526;
+    background-color: #1C1E1F;
 }
 div.post-media {
     display: flex;
@@ -27,7 +27,7 @@ div.post-media {
     width: 100%;
 }
 .post-options {
-    background-color: #242526;
+    background-color: #1C1E1F;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,4 +78,22 @@ p.post {
 } */
 .like {
     cursor: pointer;
+}
+
+.comment-body {
+    background-color: #2c3032;
+    padding: 10px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.author-name {
+    font-weight: 800;
+}
+.prepare-coment {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1C1E1F;
 }

@@ -37,3 +37,13 @@ def like(request, id_post):
         Post.updateLike(id_post, userLogin['id'], likes, 1)
         return HttpResponse("¡Publicación liked!")
 
+@firebase_login_required
+def comment(request):
+    if request.method == "POST":
+        idAuth = request.session.get('user_id')
+        content = request.POST['comment']
+        idPost = request.POST['idPost']
+        Post.addComment(idPost, idAuth, content)
+        return redirect('home')
+    return redirect('home')
+

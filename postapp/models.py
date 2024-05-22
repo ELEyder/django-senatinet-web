@@ -59,7 +59,6 @@ class Post():
         for doc in posts_docs:
             post_data = doc.to_dict()
             post_data['id'] = doc.id
-            post_data['date'] = post_data['date']
             for docUser in users_docs:
                 if docUser.id == post_data['author']:
                     data = docUser.to_dict()
@@ -121,5 +120,35 @@ class Post():
         }
         post_ref.update(data)
 
-
-
+    @staticmethod
+    def addComment(id_post, id_user, content):
+        date = firestore.SERVER_TIMESTAMP
+        data = {
+            'author': id_user,
+            'content': content,
+            'date' : date,
+            'post': id_post,
+            'typeMedia': '',
+            'urlMedia': '',
+            'likes': 0,
+            'likesD': []
+        }
+        db.collection('comments').add(data)
+    
+    @staticmethod
+    def getComments(id_post):
+        com_ref = db.collection('comments').where("post", "==", id_post)
+        com_docs = com_ref.get()
+        users_docs = db.collection('users').get()
+        coms_data = []
+        for doc in com_docs:
+            com_data = doc.to_dict()
+            com_data['id'] = doc.id
+            for docUser in users_docs:
+                if docUser.id == com_data['author']:
+                    data = docUser.to_dict()
+                    com_data['authorName'] = data['firstName'] + ' ' + data['lastName']
+                    com_data['authorUsername'] = data['username']
+                    com_data['authorAvatar'] = data['urlAvatar']
+            coms_data.append(com_data)
+        return coms_data

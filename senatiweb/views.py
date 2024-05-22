@@ -32,6 +32,7 @@ def index(request):
             post['likeStatus'] = 'active'
         else:
             post['likeStatus'] = 'inactive'
+        post['comments'] = Post.getComments(post['id'])
     for userG in users:
         if (userLogin['id'] in userG['friendRequestR']):
             userG['fStatus'] = 'Cancel'
