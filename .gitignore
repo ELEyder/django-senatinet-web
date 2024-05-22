@@ -1,5 +1,5 @@
 .env
 /config
 /venv
-/senatiweb
+/senatiweb/__pycache__
 # /media/posts/
