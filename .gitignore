@@ -2,4 +2,6 @@
 /config
 /venv
 /senatiweb/__pycache__
+/postapp/__pycache__
+/userapp/__pycache__
 # /media/posts/
