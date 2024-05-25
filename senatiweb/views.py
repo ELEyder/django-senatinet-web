@@ -6,7 +6,6 @@ from firebase_admin import auth
 from django.http import HttpResponse
 import os
 import pyrebase
-from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -53,6 +52,7 @@ def login(request):
         authentication = firebase.auth()
         try:
             user = authentication.sign_in_with_email_and_password(email, password)
+            DefaultUser.updateStatus(user['localId'], "Online")
             request.session['user_id'] = user['localId']
             return redirect('home')
         except:
@@ -89,6 +89,7 @@ def signup(request):
     return redirect('login')
 
 def exit(request):
+    DefaultUser.updateStatus(request.session.get('user_id'), "Disconected")
     request.session.flush()
     return redirect('login')
 

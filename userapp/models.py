@@ -74,7 +74,7 @@ class DefaultUser():
             'lastName': lastName,
             'nicknames' : [userName],
             'phoneNumber': 'Sin registros',
-            'state': 'Desconectado',
+            'status': 'Disconected',
             'studies': [],
             'urlAvatar': '/media/avatars/0.jpg',
             'username': userName,
@@ -85,7 +85,7 @@ class DefaultUser():
         ruta_original = os.path.join(settings.MEDIA_ROOT, 'avatars', '0.jpg')
         nueva_ruta = os.path.join(settings.MEDIA_ROOT, 'avatars', id + '.jpg')
         doc_ref.update({
-            'urlAvatar' : nueva_ruta
+            'urlAvatar' : '/media/avatars/'+ id +'.jpg'
         })
         copy(ruta_original, nueva_ruta)
 
@@ -166,3 +166,10 @@ class DefaultUser():
         })
         return 'Solicitud Enviada'
 
+    @staticmethod
+    def updateStatus(id, status):
+        usuario_ref = db.collection("users").document(id)
+        data = {
+            'status': status,
+        }
+        usuario_ref.update(data)

@@ -1,25 +1,28 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/header.css' %}">
 <header>
-    <a href="{% url 'home' %}">
+
         <div class="home">
-            <div class="logo">
-                <img src="{% static 'img/favicon.jpg' %}" alt="avatar" class="logo">
-            </div>
-            <h1 class="logo">SENATINET</h1>
+            <a href="{% url 'home' %}">
+                <div class="logo">
+                    <img src="{% static 'img/favicon.jpg' %}" alt="avatar" class="logo">
+                </div>
+            </a>
+            <input class="logo" type="text" placeholder="Search in Senatinet">
         </div>
-    </a>
     <div class="info-user">
-        <!-- <div class="avatar" style="background-image: url('{{ userLogin.urlAvatar }}');"></div> -->
         <a href="{% url 'viewUser' username=userLogin.username %}">
             <div class="avatar-icon">
                 <img src="{{ userLogin.urlAvatar }}" alt="avatar" class="avatar-icon">
             </div>
          </a>
-        <div>
-            <p class="user name">Welcome {{userLogin.firstName}} {{userLogin.lastName}}</p>
-            <p class="user email">{{userLogin.email}}</p>
+        <div class="text-user">
+            <p class="user name">{{userLogin.firstName}} {{userLogin.lastName}}</p>
+            <div class="state">
+                <div class="state-circle"></div><p class="user state">{{userLogin.status}}</p> 
+            </div>     
         </div>
     </div>
-    <a class="postear" href="{% url 'userConfiguration' %}">Settings</a>
-    <a class="postear" href="{% url 'exit' %}">Logout</a>
+    <a class="btn-header" href="{% url 'userConfiguration' %}">Settings</a>
+    <a class="btn-header" href="{% url 'exit' %}">Logout</a>
 </header>

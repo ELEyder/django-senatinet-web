@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/post/post.css' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-    <title>SENATINET</title>
+    <title>Senatinet</title>
 </head>
 <body>
     {% include 'header.html' %}
@@ -17,14 +16,14 @@
             <form action="{% url 'postear' %}" class="postear" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input class="content" type="text" name="content" placeholder="¿En que piensas?" maxlength="1000" required/>
-                <div>
-                    <label for="media" class="media">Select Photo, gif or video</label>
+                <div class="postear-option">
+                    <label for="media" class="media">Select photo, gif or video</label>
                     <input type="file" name="media" class="media" id="media" accept=".jpg, .gif, .mp4" />
                     <button type="submit" class="postear">Post</button>
                 </div>
             </form>
             {% for post in posts %}
-            <div class="post" id="">
+            <div class="post">
                 <div class="post-header">
                     <a href="{% url 'viewUser' username=post.authorUsername %}">
                         <div class="avatar-icon">
@@ -35,9 +34,11 @@
                         <p class="post">{{ post.date }}</p>
                     </div>
                 </div>
+                {% if post.content != '' %}
                 <div class="post-main">
                     <p class="content">{{ post.content }}</p>
                 </div>
+                {% endif %}
                 <div class="post-media">
                     {% if post.typeMedia == 'img' %}
                         <img src="{{ post.urlMedia }}" alt="" class="media">
@@ -50,7 +51,7 @@
                     {% endif %}
                 </div>
                 <div class="post-options">
-                    <a class="btn-like {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>
+                    <a class="btn-post-option {{ post.likeStatus }}" id-post="{{ post.id }}" likes="{{ post.likes }}" onclick="like(this);">Likes: {{ post.likes }}</a>
                     <a class="btn-post-option" idPost="{{ post.id }}" onclick="goComment(this);">Comment</a>
                     <a class="btn-post-option"href="#">Searchs: {{ post.searchs }}</a>
                 </div>
@@ -64,7 +65,6 @@
                             <div class="comment-body">
                                 <a href="{% url 'viewUser' username=comment.authorUsername %}" class="author-name">{{ comment.authorName }}</a>
                                 <p class="content">{{ comment.content }}</p>
-
                             </div>
                         </div>
                     </div>
@@ -74,14 +74,19 @@
                     {% csrf_token %}
                     <input type="text" class="content" name="comment" id="{{ post.id }}" placeholder="Comentario" required>
                     <input type="hidden" name="idPost" value="{{ post.id }}">
-                    <button type="submit" class="postear">Comment</button>
+                    <button type="submit" class="btn-comment">
+                        <svg class="postear" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </form>
             </div>
             {% endfor %}
+            <audio id="like-mp3" src="{% static 'audio/like.wav' %}"></audio>
         </section>
         <section class="usuarios">
-            Users
-            {% for user in users %}
+            <div class="users">
+                {% for user in users %}
                 <div class="usuario">
                     <a href="{% url 'viewUser' username=user.username %}">
                         <div class="avatar-icon">
@@ -91,11 +96,13 @@
                     <a href="{% url 'viewUser' username=user.username %}" class="usuario">{{ user.firstName }} {{ user.lastName }}</a>
                     <button class="btnAgregarAmigo {{ user.fStatus }}" state="{{ user.fStatus }}" username="{{ user.username }}" idUser="{{ user.id }}" onClick="sendRequest(this)">{{ user.fStatus }}</button>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </section>
     </main>
     
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/posts.js' %}"></script>
+    <script src="{% static 'js/post/post.js' %}"></script>
+    <script src="{% static 'js/user/user.js' %}"></script>
 </body>
 </html>

@@ -14,26 +14,27 @@
     {% include 'header.html' %}
     <main>
         <section class="profile">
-            <div class="avatar">
-                <img src="{{ userData.urlAvatar }}" alt="avatar" class="avatar">
-            </div>
-            <h1 class="profile">{{ userData.firstName }} {{ userData.lastName }} ({{ userData.nicknames.0 }})</h1>
-            <h2 class="profile">@{{ userData.username }}</h2>
-            <p class="profile">{{ userData.email }}</p>
-            <p class="profile">Friends:</p>
-            <section class="my-friends">
-            {% for friend in friendsData %}
-
-            <a class="friend" href="{% url 'viewUser' username=friend.username %}">
-                <div class="friend">
-                    <div class="avatar-icon friend-icon">
-                        <img src="{{ friend.urlAvatar }}" alt="avatar" class="avatar-icon">
-                    </div>
-                    <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+            <div class="your-profile">
+                <div class="avatar">
+                    <img src="{{ userData.urlAvatar }}" alt="avatar" class="avatar">
                 </div>
-            </a>
-            {% endfor %}
-            </section>
+                <h1 class="profile">{{ userData.firstName }} {{ userData.lastName }} ({{ userData.nicknames.0 }})</h1>
+                <h2 class="profile">@{{ userData.username }}</h2>
+                <p class="profile">{{ userData.email }}</p>
+            </div>
+            <div class="my-friends">
+                <h1>Friends</h1>
+                {% for friend in friendsData %}
+                <a class="friend" href="{% url 'viewUser' username=friend.username %}">
+                    <div class="friend">
+                        <div class="avatar-icon friend-icon">
+                            <img src="{{ friend.urlAvatar }}" alt="avatar" class="avatar-icon">
+                        </div>
+                        <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
         </section>
         <section class="posts">
             {% for post in posts %}
@@ -73,5 +74,6 @@
         </section>
     </main>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/post/post.js' %}"></script>
 </body>
 </html>

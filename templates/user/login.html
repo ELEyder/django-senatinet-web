@@ -1,13 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/user/login.css' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-    <title>Red Social</title>
+    <title>Login - Register</title>
 </head>
 <body>
     <button class="toggle-login">Login</button>
@@ -44,27 +44,29 @@
                 <h2>Sing Up</h2>
                 <div class="input-group">
                     <input type="text" name="username" required>
-                    <label for="username">Username</label>
+                    <label for="username">Username*</label>
                 </div>
-                <div class="input-group">
-                    <input type="text" name="firstname" required>
-                    <label for="firstname">First Name</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="lastname" required>
-                    <label for="lastname">Last Name</label>
+                <div class="input-group-names">
+                    <div class="input-group medium">
+                        <input type="text" name="firstname" required>
+                        <label for="firstname">First Name*</label>
+                    </div>
+                    <div class="input-group medium">
+                        <input type="text" name="lastname" required>
+                        <label for="lastname">Last Name*</label>
+                    </div>
                 </div>
                 <div class="input-group">
                     <input type="email" name="email" required>
-                    <label for="email">Email</label>
+                    <label for="email">Email*</label>
                 </div>
                 <div class="input-group">
                     <input type="password" name="password1" required>
-                    <label for="password1">Password</label>
+                    <label for="password1">Password*</label>
                 </div>
                 <div class="input-group">
                     <input type="password" name="password2" required>
-                    <label for="password2">Password</label>
+                    <label for="password2">Password*</label>
                 </div>
                 <div class="remember">
                     <label><input type="checkbox" required> I agree to the terms & conditions</label>
@@ -88,37 +90,6 @@
         <span style="--i:2"></span>
         <span style="--i:1"></span>
     </div>
-    <script>
-        const wrapper = document.querySelector('.wrapper');
-        const signUpLink = document.querySelector('.signUp-link');
-        const signInLink = document.querySelector('.signIn-link');
-        const toggleLogin = document.querySelector('.toggle-login');
-        const close = document.querySelector('.close');
-
-        signUpLink.addEventListener('click', () => {
-            wrapper.classList.toggle('show-sign');
-            wrapper.classList.add('show-bg');
-            wrapper.style.height = '620px'; 
-        })
-
-        signInLink.addEventListener('click', () => {
-            wrapper.classList.toggle('show-sign');
-            wrapper.classList.add('show-bg');
-            wrapper.style.height = '500px';
-        })
-
-        toggleLogin.addEventListener('click', () => {
-            toggleLogin.classList.toggle('active');
-            wrapper.classList.toggle('active');
-        })
-
-        close.addEventListener('click', () => {
-            toggleLogin.classList.toggle('active');
-            wrapper.classList.toggle('active');
-            wrapper.classList.remove('show-bg');
-        })
-
-
-    </script>
+    <script src="{% static 'js/user/login.js'%}"></script>
 </body>
 </html>
