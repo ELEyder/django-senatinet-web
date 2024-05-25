@@ -1,27 +1,96 @@
+@import url("../root.css");
 body {
+    margin: 0;
+    padding: 0;
+}
+section.configuration {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #18191a;
-    color: #B0B3B8;
+    background-color: var(--color-bg);
     height: 100vh;
 }
 form.configurar {
-    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 1px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
-main {
-    padding-top: 70px;
+.option {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    background-color: #18191a;
-    text-decoration: none;
-    color: #B0B3B8;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-a {
-    text-decoration: none;
-    color: #B0B3B8;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+input.avatar {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+label.avatar {
+    text-align: center;
+    color: var(--color-dark);
+    padding: 20px;
+    border-radius: 10px;
+    font-family: var(--poppins);
+    cursor: pointer;
+}
+
+label.avatar:hover {
+    background-color: var(--white-secondary);
+}
+
+label {
+    font-family: var(--poppins);
+}
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+}
+
+input:hover,
+input:focus {
+    background-color: var(--white-secondary);
+}
+
+select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+}
+
+select:hover,
+select:focus {
+    background-color: var(--white-secondary);
+}
+
+button {
+    background-color: var(--color-secondary); 
+    color: var(--color-primary);
+    padding: 10px 20px 10px 20px;
+    outline: none;
+    border: 0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: var(--poppins);
+}
+button:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

@@ -154,6 +154,7 @@ p.content {
 }
 
 .comment-body {
+    background-color: var(--white-secondary);
     padding: 10px;
     border-radius: 20px;
     width: 100%;

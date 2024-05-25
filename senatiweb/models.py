@@ -13,7 +13,7 @@ class Country():
 
     @staticmethod
     def getCountries():
-        countries_docs = db.collection('countries').get()
+        countries_docs = db.collection("countries").order_by("name", direction=firestore.Query.ASCENDING).get()
         countries = []
         for doc in countries_docs:
             country = doc.to_dict()

@@ -82,6 +82,7 @@ def signup(request):
                 lastName=request.POST['lastname'],
                 email=request.POST['email'],
             )
+            Post.addPost(user.uid, "se ha unido a Senatinet", '')
             return HttpResponse("Usuario Creado")
         except:
             return HttpResponse("Error al crear usuario: Ya existe el correo registrado u otro error no relacionado conmigo:")
