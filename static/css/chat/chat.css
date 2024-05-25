@@ -1,0 +1,47 @@
+@import url('../root.css');
+
+body {
+    display: flex;
+}
+
+section.chats {
+    display: flex;
+    flex-direction: column;
+
+}
+.chat-header{
+    background-color: var(--color-secondary);
+    padding: 20px;
+}
+.chat-header h1{
+    width: 300px;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 30px;
+    font-family: var(--poppins);
+}
+
+.btn-chat {
+    background-color: white;
+    display: flex;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.btn-chat:hover {
+    background-color: var(--white-secondary);
+}
+
+.chat-body{
+    display: flex;
+    width: 1000px;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

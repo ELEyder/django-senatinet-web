@@ -5,18 +5,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/chat/chat.css' %}">
     <title>Chat</title>
 </head>
 <body>
     <section class="chats">
+        <div class="chat-header">
+            <h1>Chats</h1>
+        </div>
         {% for chat in chats %}
-            <button id="button-chat" chatId="{{ chat.id }}" onclick="loadMessages('{{ chat.id }}')" >Chat 1</button>
+        <div id="button-chat" class="btn-chat" chatId="{{ chat.id }}" onclick="loadMessages('{{ chat.id }}')">
+            <p id="receiverFullName">{{ chat.receiverFirstName }} {{ chat.receiverLastName }}</p>
+        </div>
         {% endfor %}
     </section>
-    <section class="chat-details" id="chat-details">
-        
+    <section class="chat-body" id="chat-body">
+        <h1 class="info">Aquí se mostraran tus chats</h1>
+        <div class="chat-details" id="chat-details">
+        </div>
     </section>
-    <section>
+    <section id="input-chat">
         <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí">
         <button onclick="sendMensaje('{{ idAuth }}')">Enviar</button>
     </section>
