@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect
-from django.core.files.storage import FileSystemStorage
 from senatiweb.decorators import firebase_login_required
 from django.http import HttpResponse
-from django.conf import settings
-import os
 
 from .models import DefaultUser
 from senatiweb.models import Country
@@ -69,3 +66,4 @@ def friendRequest(request, idUser):
     else:
         msg = DefaultUser.sendFriendRequest(userLogin['id'] ,idUser)
         return HttpResponse(msg)
+    

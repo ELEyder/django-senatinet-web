@@ -100,7 +100,10 @@ p.state {
 }
 
 
-a.btn-header {
+button.btn-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-primary);
     background-color: var(--color-secondary);
     font-family: var(--poppins);
@@ -110,10 +113,22 @@ a.btn-header {
     border-radius: 10px;
     margin-left: 20px;
     user-select: none;
+    outline: none;
+    border: 0;
+    cursor: pointer;
 }
-a.btn-header:hover {
+button.btn-header:hover {
     background-color: var(--color-primary);
     color: white;
+}
+button.btn-header:hover .logout{
+    stroke: white;
+}
+
+svg.logout {
+    width: 25px;
+    height: 25px;
+    stroke: var(--color-primary);
 }
 
 ::-webkit-scrollbar {
@@ -121,10 +136,12 @@ a.btn-header:hover {
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #2c2c2c; /* Color de fondo de la barra de desplazamiento */
+    /* background-color: #2c2c2c; */
+    background-color: var(--color-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #9f9f9f; /* Color del "pulgarcito" de la barra de desplazamiento */
+    /* background-color: #9f9f9f; */
+    background-color: var(--color-secondary); /* Color del "pulgarcito" de la barra de desplazamiento */
     border-radius: 5px; /* Bordes redondeados */
 }

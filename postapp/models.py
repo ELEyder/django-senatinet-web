@@ -2,11 +2,11 @@ from firebase_admin import firestore
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
-from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
 db = firestore.client()
+
 class Post():
     @staticmethod
     def addPost(author, action, content, media=None):

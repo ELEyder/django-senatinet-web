@@ -1,0 +1,27 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    <section class="chats">
+        {% for chat in chats %}
+            <button id="button-chat" chatId="{{ chat.id }}" onclick="loadMessages('{{ chat.id }}')" >Chat 1</button>
+        {% endfor %}
+    </section>
+    <section class="chat-details" id="chat-details">
+        
+    </section>
+    <section>
+        <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí">
+        <button onclick="sendMensaje('{{ idAuth }}')">Enviar</button>
+    </section>
+</body>
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore-compat.js"></script>
+<script src="{% static 'js/chat/messages.js' %}"></script>
+</html>

@@ -28,7 +28,8 @@ urlpatterns = [
     path('home/', index, name='home'),
     path('user/', include('userapp.urls')),
     path('post/', include('postapp.urls')),
-    path('logout/', exit, name='exit'),
+    path('logout/', exit, name='logout'),
+    path('chat/', include('chatapp.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
