@@ -42,6 +42,14 @@ class DefaultUser():
         user_ref = db.collection('users').document(user_id)
         user_doc = user_ref.get().to_dict()
         user_doc['id'] = user_id
+        friendsdata= []
+        for id in user_doc['friends']:
+            friend_doc = db.collection('users').document(id).get()
+            friend_data = friend_doc.to_dict()
+            friend_data['id'] = id
+            friendsdata.append(friend_data)
+            
+        user_doc['friendsData'] = friendsdata
         return user_doc
 
     # Trae un usuario por su username

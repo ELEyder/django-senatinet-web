@@ -15,6 +15,5 @@ from channels.routing import ProtocolTypeRouter
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'senatiweb.settings')
 
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": senatiweb.routing.application,
+    "http": get_asgi_application()
 })

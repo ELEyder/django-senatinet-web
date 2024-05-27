@@ -2,28 +2,53 @@
 
 body {
     display: flex;
+    max-height: 100vh;
 }
 
 section.chats {
     display: flex;
     flex-direction: column;
-
+    max-height: 100vh;
 }
-.chat-header{
-    background-color: var(--color-secondary);
-    padding: 20px;
-}
-.chat-header h1{
-    width: 300px;
-    color: var(--color-primary);
-    font-weight: 500;
-    font-size: 30px;
-    font-family: var(--poppins);
-}
-
-.btn-chat {
+.chats-header{
     background-color: white;
     display: flex;
+    padding: 20px;
+}
+.chats-header h1{
+    width: 200px;
+    color: var(--color-dark);
+    font-weight: 700;
+    font-size: 20px;
+    font-family: var(--poppins);
+}
+.chats-header a{
+    background-color: var(--color-secondary);
+    border: 0;
+    outline: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 0 0 20px;
+}
+.chats-header svg{
+    width: 25px;
+    height: 25px;
+    stroke: var(--color-primary);
+    pointer-events: none;
+    stroke-width: 2px;
+}
+.chats-header a:hover{
+    background-color: var(--color-primary);
+}
+.chats-header a:hover svg{
+    stroke: white;
+}
+.btn-chat {
+    background-color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
     padding: 20px;
     cursor: pointer;
 }
@@ -32,16 +57,154 @@ section.chats {
     background-color: var(--white-secondary);
 }
 
-.chat-body{
-    display: flex;
-    width: 1000px;
-    align-items: center;
-    justify-content: center;
-}
-
-.chat-details {
+.chat{
+    width: 100%;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+.chat-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: scroll;
+    height: 100%;
+    justify-content: end;
+}
+.info {
+    background-color: var(--white-secondary);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chat-header{
+    width: 100%;
+    background-color: var(--white-secondary);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.chat-header h1{
+    width: 200px;
+}
+
+
+
+.message-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0px 40px;
+}
+.message {
+    display: flex;
+    border-radius: 5px;
+    width: max-content;
+    padding: 5px 10px;
+}
+.right {
+    align-self: flex-end;
+    background-color: var(--color-secondary);
+}
+.left {
+    align-self: flex-start;
+    background-color: white;
+    left: 0;
+}
+.content {
+    font-family: var(--poppins);
+    font-size: 16px;
+    margin: 0 5px 0 0;
+}
+.date {
+    font-family: var(--poppins);
+    font-size: 14px;
+    font-weight: 200;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+}
+
+.input-chat {
+    display: none;
+    padding: 15px;
+    background-color: white;
+}
+.input-chat input{
+    padding: 15px;
+    flex: 1;
+    background-color: white;
+    border: 0;
+    border-radius: 10px;
+    outline: none;
+}
+.input-chat button{
+    background-color: var(--color-secondary);
+    border: 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+    cursor: pointer;   
+}
+.input-chat button:hover{
+    background-color: var(--color-primary);
+}
+.input-chat button:hover svg{
+    stroke: white;
+}
+.send {
+    width: 25px;
+    height: 25px;
+    stroke: var(--color-primary);
+    pointer-events: none;
+}
+
+.overlay {
+    background-color: white;
+    overflow: hidden;
+    position: absolute;
+    width: 0px;
+    transition: 0.2s ease-in;
+    height: 100%;
+}
+
+.modal h1 {
+    white-space: nowrap;
+    background-color: var(--color-secondary);
+    font-size: 20px;
+    padding: 20px;
+}
+.friend-chat {
+    white-space: nowrap;
+    background: white;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.friend-chat:hover {
+    background-color: var(--white-secondary);
+
+}
+
+div.avatar-icon {
+    background-color: white;
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
+    margin-right: 10px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
+img.avatar-icon {
+    width: auto;
+    height: 52px;
 }

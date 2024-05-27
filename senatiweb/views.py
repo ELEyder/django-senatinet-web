@@ -23,6 +23,7 @@ firebase = pyrebase.initialize_app(firebase_config)
 
 @firebase_login_required
 def index(request):
+    DefaultUser.updateStatus(request.session.get('user_id'), 'Online')
     userLogin = DefaultUser.getUserById(request.session.get('user_id'))
     posts = Post.getPosts()
     users = DefaultUser.getUsersById(userLogin['id'])

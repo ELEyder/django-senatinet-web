@@ -2,6 +2,9 @@ from firebase_admin import firestore
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
+from datetime import datetime, timedelta
+import pytz
+from tzlocal import get_localzone
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -59,6 +62,15 @@ class Post():
         for doc in posts_docs:
             post_data = doc.to_dict()
             post_data['id'] = doc.id
+            # Obtener la zona horaria local del usuario
+            local_timezone = get_localzone()
+
+            # Obtener la fecha y hora actuales en la zona horaria local del usuario
+            now_local = datetime.now(local_timezone)
+
+            # Obtener el desplazamiento horario de UTC para la zona horaria local del usuario
+            utc_offset_hours = local_timezone.utcoffset(now_local)
+            post_data['date'] = post_data['date'] + utc_offset_hours
             for docUser in users_docs:
                 if docUser.id == post_data['author']:
                     data = docUser.to_dict()

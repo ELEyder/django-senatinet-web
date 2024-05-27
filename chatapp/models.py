@@ -44,3 +44,26 @@ class Chat():
             'date' : date
         }
         db.collection(f'chats/{id}/messages').add(data)
+        
+    @staticmethod
+    def addChat(members):
+        chat_temp = []
+        for member in members:
+            user = db.collection('users').document(member).get().to_dict()
+            chat_temp.append(user['chats'])
+        for id in chat_temp[0]:
+            if id in chat_temp[1]:
+                return {
+                    'response' : False,
+                    'idchat' : id
+                }
+        data = {
+            'members' : members,
+        }
+        chat_ref = db.collection('chats').add(data)
+        for member in members:
+            db.collection('users').document(member).update({
+            'chats' : firestore.ArrayUnion([chat_ref[1].id])
+        })
+        return True
+        
