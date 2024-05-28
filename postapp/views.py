@@ -11,7 +11,9 @@ def postear(request):
     userLogin = DefaultUser.getUserById(idAuth)
     if request.method == "POST":
         author = userLogin['id']
-        content = request.POST['content']
+        content = request.POST['content'].strip()
+        if content == '' and not request.FILES:
+            return redirect('home')
         action = ''
         if request.FILES:
             media = request.FILES['media']

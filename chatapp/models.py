@@ -1,4 +1,8 @@
 from firebase_admin import firestore
+import os
+from django.core.files.storage import FileSystemStorage
+
+from django.conf import settings
 
 db = firestore.client()
 
@@ -36,14 +40,35 @@ class Chat():
         return messages
     
     @staticmethod
-    def addMessage(id, author, content):
+    def addMessage(id, author, content, media=None):
         date = firestore.SERVER_TIMESTAMP
         data = {
             'author' : author,
             'content' : content,
             'date' : date
         }
-        db.collection(f'chats/{id}/messages').add(data)
+        ref = db.collection(f'chats/{id}/messages').add(data)
+        idMessage = ref[1].id
+        doc = db.collection(f'chats/{id}/messages').document(idMessage)
+        if (media != None):
+            fs = FileSystemStorage()
+            typeMedia = 'img'
+            if 'image/jpeg' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.jpg')
+            elif 'image/gif' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.gif')
+            elif 'video/mp4' in  media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.mp4')
+                typeMedia = 'video'
+            else:
+                return
+            name = fs.save(location, media)
+            urlMedia = fs.url(name)
+            data = {
+                'urlMedia': urlMedia,
+                'typeMedia': typeMedia,
+            }
+            doc.update(data)
         
     @staticmethod
     def addChat(members):
@@ -61,9 +86,13 @@ class Chat():
             'members' : members,
         }
         chat_ref = db.collection('chats').add(data)
+        idChat = chat_ref[1].id
         for member in members:
             db.collection('users').document(member).update({
-            'chats' : firestore.ArrayUnion([chat_ref[1].id])
+            'chats' : firestore.ArrayUnion([idChat])
         })
-        return True
+        return {
+            'response' : True,
+            'idchat' : idChat
+        }
         

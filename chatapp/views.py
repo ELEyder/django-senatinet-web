@@ -23,10 +23,12 @@ def chatMessages(request, id):
 @firebase_login_required
 def sendMessage(request, id):
     if request.method == 'POST':
-        message_data = json.loads(request.body)
         author = request.session.get('user_id')
-        content = message_data.get('content')
-        Chat.addMessage(id, author, content)
+        content = request.POST.get('content').strip()
+        media = request.FILES.get('media', None)
+        if media == None and content == '':
+            return JsonResponse({'messages': 'ERRORRRR'})
+        Chat.addMessage(id, author, content, media)
         return JsonResponse({'messages': 'susefull'})
     return JsonResponse({'messages': 'ERRORRRR'})
     

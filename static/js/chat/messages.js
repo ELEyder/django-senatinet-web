@@ -39,33 +39,95 @@ function loadMessages(event){
                 const messageDate = message.date.toDate();
                 var horas = messageDate.getHours(); // Obtiene las horas (formato de 0 a 23)
                 var minutos = messageDate.getMinutes();
+                var messageHTML = ''
                 if (message.author == receiverId) {
-                    messagesDiv.innerHTML += `
+                    messageHTML += `
                     <div class="message-row">
                         <div class="message left">
-                            <div class="content">
-                            ${message.content}
-                            </div>
-                            <div class="date">
-                            ${horas}:${minutos}
+                        `
+                        if (message.urlMedia != undefined) {
+                            if (message.typeMedia == 'img') {
+                                messageHTML += `
+                                <div>
+                                        <div class="media">
+                                            <img src="${message.urlMedia}" class="media">
+                                        </div>
+                                    </div>
+                                `
+                            }
+                            else {
+                                messageHTML += `
+                                <div>
+                                        <div class="media">
+                                <video controls class="media">
+                                    <source class="media" src="${message.urlMedia}" type="video/mp4">
+                                    <source class="media" src="${message.urlMedia}" type="video/avi">
+                                    Tu navegador no soporta la reproducción de videos.
+                                </video>
+                                </div>
+                                </div>
+                                `
+
+                            }
+                        }
+                            
+                    messageHTML += `
+                            <div class="message-body">
+                                <div class="content">
+                                    ${message.content}
+                                </div>
+                                <div class="date">
+                                    ${horas}:${minutos}
+                                </div>
                             </div>
                         </div>
                     </div>
                     `
                 } else {
-                    messagesDiv.innerHTML += `
+                    messageHTML += `
                     <div class="message-row">
                         <div class="message right">
-                            <div class="content">
-                            ${message.content}
-                            </div>
-                            <div class="date">
-                            ${horas}:${minutos}
+                        `
+                        if (message.urlMedia != undefined) {
+                            if (message.typeMedia == 'img') {
+                                messageHTML += `
+                                <div>
+                                        <div class="media">
+                                            <img src="${message.urlMedia}" class="media">
+                                        </div>
+                                    </div>
+                                `
+                            }
+                            else {
+                                messageHTML += `
+                                <div>
+                                        <div class="media">
+                                <video controls class="media">
+                                    <source class="media" src="${message.urlMedia}" type="video/mp4">
+                                    <source class="media" src="${message.urlMedia}" type="video/avi">
+                                    Tu navegador no soporta la reproducción de videos.
+                                </video>
+                                </div>
+                                </div>
+                                `
+
+                            }
+                        }
+                                
+                        messageHTML += `
+                            <div class="message-body">
+                                <div class="content">
+                                    ${message.content}
+                                </div>
+                                <div class="date">
+                                    ${horas}:${minutos}
+                                </div>
                             </div>
                         </div>
                     </div>
                     `
                 }
+                messagesDiv.innerHTML += messageHTML
             });
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             info.style.display = 'none'
@@ -81,24 +143,30 @@ function loadMessages(event){
 function sendMensaje(){
     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     const dominioBase = window.location.origin;
+
     const id = document.getElementById('chat-header').getAttribute('idchat');
     var input_content = document.getElementById('message-input')
     var content = input_content.value
-    const messageData = {
-        content: content,
-    };
+
+    const archivoInput = document.getElementById('input-media');
+    const media = archivoInput.files[0];
+    const formData = new FormData();
+    formData.append('content', content);
+
+    formData.append('media', media);
+
+    
     fetch(`${dominioBase}/chat/${id}/send/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken,
         },
-        body: JSON.stringify(messageData),
+        body: formData,
     })
     .then(response => {
         console.log('Respuesta del servidor:', response);
         input_content.value = ""
-
+        archivoInput.value = null
     })
     .catch(error => {
         console.error('Error al enviar el mensaje:', error);
@@ -132,10 +200,8 @@ function addChat(event){
     .then(response => response.json())
     .then(data => {
         console.log('Respuesta del servidor:', data);
-        if (!data.response) {
-            const element = document.querySelector(`[idchat="${data.idchat}"]`);
-            element.click()
-        }
+        const element = document.querySelector(`[idchat="${data.idchat}"]`);
+        element.click()
         closeOverlay()
     })
     .catch(error => {

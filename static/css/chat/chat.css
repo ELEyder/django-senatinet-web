@@ -70,7 +70,6 @@ section.chats {
     flex: 1;
     overflow-y: scroll;
     height: 100%;
-    justify-content: end;
 }
 .info {
     background-color: var(--white-secondary);
@@ -101,9 +100,17 @@ section.chats {
 }
 .message {
     display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    width: max-content;
+    padding: 5px;
+}
+.message-body {
+    display: flex;
     border-radius: 5px;
     width: max-content;
     padding: 5px 10px;
+    width: 100%;
 }
 .right {
     align-self: flex-end;
@@ -118,6 +125,7 @@ section.chats {
     font-family: var(--poppins);
     font-size: 16px;
     margin: 0 5px 0 0;
+    flex: 1;
 }
 .date {
     font-family: var(--poppins);
@@ -207,4 +215,39 @@ div.avatar-icon {
 img.avatar-icon {
     width: auto;
     height: 52px;
+}
+
+.media{
+    border-radius: 10px;
+    height: 300px;
+    width: auto;
+}
+
+img.media,
+video.media {
+    width: 100%;
+    height: 100%;
+}
+
+input.file-media {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+label.file-media {
+    width: max-content;
+    text-align: center;
+    color: var(--color-dark);
+    padding: 20px;
+    border-radius: 10px;
+    font-family: var(--poppins);
+    cursor: pointer;
+}
+
+label.file-media:hover {
+    background-color: var(--white-secondary);
 }

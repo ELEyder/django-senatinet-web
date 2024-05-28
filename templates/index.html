@@ -15,7 +15,7 @@
         <section class="posts">
             <form action="{% url 'postear' %}" class="postear" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input class="content" type="text" name="content" placeholder="¿En que piensas?" maxlength="1000" required/>
+                <input class="content" type="text" name="content" placeholder="¿En que piensas?" maxlength="1000"/>
                 <div class="postear-option">
                     <label for="media" class="media">Select photo, gif or video</label>
                     <input type="file" name="media" class="media" id="media" accept=".jpg, .gif, .mp4" />
