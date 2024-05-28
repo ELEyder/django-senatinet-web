@@ -70,6 +70,7 @@ class DefaultUser():
         data = {
             'address': 'Sin especificar',
             'country': 'Sin especificar',
+            'chats': [],
             'email': email,
             'firstName': firstName,
             'firstRegistration': dt,
