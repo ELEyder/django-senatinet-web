@@ -228,9 +228,11 @@ function loadChats(){
                     <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">
                 </div> 
                 <div>
-                    <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>
-                    <p>${chat.lastMessage}</p>
-                </div> 
+                    <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>`
+                    if (chat.lastMessage != undefined) {
+                        chatHtml += `<p>${chat.lastMessage}</p>`
+                    }
+                `</div> 
             </div>
             `;
             chatsBody.innerHTML +=chatHtml
