@@ -5,6 +5,6 @@
 /postapp/__pycache__
 /userapp/__pycache__
 /chatapp/__pycache__
-/media/avatars
+# /media/avatars
 /media/chats
 /media/posts
