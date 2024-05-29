@@ -88,10 +88,13 @@
             <div class="users">
                 {% for user in users %}
                 <div class="usuario">
-                    <a href="{% url 'viewUser' username=user.username %}">
+                    <a class="default-user-state" href="{% url 'viewUser' username=user.username %}">
                         <div class="avatar-icon">
                             <img src="{{ user.urlAvatar }}" alt="avatar" class="avatar-icon">
                         </div>
+                        <div class="state default-user">
+                            <div class="state-circle default-user {{user.status}}"></div>
+                        </div> 
                     </a>
                     <a href="{% url 'viewUser' username=user.username %}" class="usuario">{{ user.firstName }} {{ user.lastName }}</a>
                     <button class="btnAgregarAmigo {{ user.fStatus }}" state="{{ user.fStatus }}" username="{{ user.username }}" idUser="{{ user.id }}" onClick="sendRequest(this)">{{ user.fStatus }}</button>

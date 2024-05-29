@@ -199,9 +199,12 @@ function addChat(event){
     })
     .then(response => response.json())
     .then(data => {
+        closeOverlay()
         console.log('Respuesta del servidor:', data);
-        const element = document.querySelector(`[idchat="${data.idchat}"]`);
-        element.click()
+        var element = document.querySelector(`[idchat="${data.idchat}"]`);
+        if (element != null) {
+            element.click()
+        }
         closeOverlay()
     })
     .catch(error => {
@@ -224,7 +227,10 @@ function loadChats(){
                 <div class="avatar-icon">
                     <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">
                 </div> 
-                <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>
+                <div>
+                    <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>
+                    <p>${chat.lastMessage}</p>
+                </div> 
             </div>
             `;
             chatsBody.innerHTML +=chatHtml
@@ -235,8 +241,19 @@ function loadChats(){
         console.error('Error al enviar el mensaje:', error);
     });
 }
-db.collection(`chats`).onSnapshot(snapshot =>{
+db.collection(`chats`).onSnapshot(snapshot => {
     loadChats()
+    snapshot.docChanges().forEach(change => {
+        if (change.type == 'added') {
+            var idchat =change.doc.id
+            var element = document.querySelector(`[idchat="${idchat}"]`);
+            if (element != null) {
+                element.click()
+
+            }
+            closeOverlay()
+        }
+    });
 })
 
 function showOverlay(){

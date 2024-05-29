@@ -24,3 +24,8 @@ a, h1, h2, p {
     font-family: var(--poppins);
     font-size: 14px;
 }
+
+body {
+    background-color: rgb(233, 233, 233);
+
+}

@@ -15,6 +15,7 @@ section.chats {
     display: flex;
     padding: 20px;
 }
+
 .chats-header h1{
     width: 200px;
     color: var(--color-dark);
@@ -180,12 +181,38 @@ section.chats {
     transition: 0.2s ease-in;
     height: 100%;
 }
-
 .modal h1 {
     white-space: nowrap;
-    background-color: var(--color-secondary);
+    flex: 1;
     font-size: 20px;
+}
+.modal-header {
+    background-color: var(--color-secondary);
     padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.modal-header a{
+    background-color: white;
+    border: 0;
+    outline: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 0 0 20px;
+}
+.modal-header svg{
+    width: 25px;
+    height: 25px;
+    stroke: var(--color-primary);
+    pointer-events: none;
+    stroke-width: 2px;
+}
+.modal-header a:hover{
+    background-color: var(--color-primary);
+}
+.modal-header a:hover svg{
+    stroke: white;
 }
 .friend-chat {
     white-space: nowrap;

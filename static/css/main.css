@@ -1,5 +1,4 @@
 @import url("root.css");
-
 main {
     display: flex;
     justify-content: center;
@@ -52,4 +51,17 @@ a.usuario {
 .btnAgregarAmigo:hover {
     background-color: var(--color-primary);
     color: white;
+}
+.default-user-state{
+    position: relative;
+}
+.state .default-user {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 10px;
+}
+.state-circle.default-user {
+    width: 15px;
+    height: 15px;
 }

@@ -47,6 +47,11 @@ class Chat():
             'content' : content,
             'date' : date
         }
+        firstName = db.collection('users').document(author).get().to_dict().get('firstName')
+        lastMessage = firstName + ': ' + content
+        db.collection('chats').document(id).update({
+            'lastMessage' : lastMessage
+        })
         ref = db.collection(f'chats/{id}/messages').add(data)
         idMessage = ref[1].id
         doc = db.collection(f'chats/{id}/messages').document(idMessage)
