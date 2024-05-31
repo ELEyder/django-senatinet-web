@@ -1,4 +1,5 @@
 .env
+db.sqlite3
 /config
 /venv
 /senatiweb/__pycache__
