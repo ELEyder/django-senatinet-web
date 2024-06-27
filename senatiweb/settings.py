@@ -64,6 +64,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             'templates',
+            BASE_DIR / 'templates',
             '/home/eyder/senatinet-web/templates'
             ],
         'APP_DIRS': True,

@@ -2,8 +2,7 @@ from firebase_admin import firestore
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
-from datetime import datetime, timedelta
-import pytz
+from datetime import datetime
 from tzlocal import get_localzone
 from dotenv import load_dotenv
 load_dotenv()

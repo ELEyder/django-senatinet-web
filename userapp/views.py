@@ -45,6 +45,7 @@ def viewUser(request, username):
             post['likeStatus'] = 'active'
         else:
             post['likeStatus'] = 'inactive'
+        post['comments'] = Post.getComments(post['id'])
     friendsData = []
     for i in userData['friends']:
         friendData = DefaultUser.getUserById(i)

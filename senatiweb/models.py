@@ -1,14 +1,12 @@
-# from django.db import models
 from firebase_admin import firestore
-from shutil import copy
-
-db = firestore.client()
 
 class Country():
 
+    db = firestore.client()
+
     @staticmethod
     def getCountries():
-        countries_docs = db.collection("countries").order_by("name", direction=firestore.Query.ASCENDING).get()
+        countries_docs = Country.db.collection("countries").order_by("name", direction=firestore.Query.ASCENDING).get()
         countries = []
         for doc in countries_docs:
             country = doc.to_dict()
