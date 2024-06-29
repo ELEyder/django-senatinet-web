@@ -138,17 +138,23 @@ class Post():
             'author': id_user,
             'content': content,
             'date' : date,
-            'post': id_post,
             'typeMedia': '',
             'urlMedia': '',
             'likes': 0,
             'likesD': []
         }
-        db.collection('comments').add(data)
+        db.collection(f'posts/{id_post}/comments').add(data)
+        
+        post_ref = db.collection("posts").document(id_post)
+        post_dic = post_ref.get().to_dict()
+        post_ref.update({
+            'comments': post_dic['comments'] + 1,
+            'commentsD': firestore.ArrayUnion([id_user])
+        })
     
     @staticmethod
     def getComments(id_post):
-        com_ref = db.collection('comments').where("post", "==", id_post)
+        com_ref = db.collection(f'posts/{id_post}/comments')
         com_docs = com_ref.get()
         users_docs = db.collection('users').get()
         coms_data = []
