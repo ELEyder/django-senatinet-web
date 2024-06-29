@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 db = firestore.client()
+fs = FileSystemStorage()
 
 class Post():
     @staticmethod
     def addPost(author, action, content, media=None):
-        fs = FileSystemStorage()
         date = firestore.SERVER_TIMESTAMP
         data = {
             'author': author,
@@ -27,7 +27,7 @@ class Post():
             'commentsD': [],
             'searchs': 0,
             'searchsD': [],
-            'privacy' : "Público",
+            'privacy' : "Public",
             'privacyD' : []
         }
         doc = db.collection('posts').add(data)

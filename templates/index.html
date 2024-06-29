@@ -31,7 +31,7 @@
                     </a>
                     <div>
                         <a href="{% url 'viewUser' username=post.authorUsername %}" class="author-name">{{ post.authorName }}</a> <a href="">{{ post.action }}</a>
-                        <p class="post">{{ post.date|date:"F j, Y, P" }}</p>
+                        <p class="post">{{ post.date|date:"F j, Y, P" }} - {{ post.privacy }}</p>
                     </div>
                 </div>
                 {% if post.content != '' %}
