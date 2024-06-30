@@ -34,7 +34,7 @@ function loadChats(){
         chatsBody.innerHTML = ''
         data.chats.forEach(chat => {
             var chatHtml = `
-            <div id="loadMessages" idChat="${chat.id}" fullName="${chat.receiverFirstName} ${chat.receiverLastName}" receiverId="${chat.receiver}" class="btn-chat loadMessages">
+            <div id="loadMessages" idChat="${chat.id}" fullName="${chat.receiverFirstName} ${chat.receiverLastName}" receiverId="${chat.receiver}" receiverStatus="${chat.receiverStatus}" class="btn-chat loadMessages">
                 <div class="default-user-state">
                     <div class="avatar-icon">
                         <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">

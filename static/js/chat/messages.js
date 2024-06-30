@@ -8,6 +8,7 @@ export function loadMessages(event){
     var fullName = button.getAttribute('fullname')
     var avatarUrl = button.getElementsByTagName('img')[0].getAttribute('src')
     var receiverId = button.getAttribute('receiverid')
+    var receiverStatus = button.getAttribute('receiverStatus')
 
     var info = document.getElementById('info')
     var input = document.getElementById('input-chat')
@@ -18,8 +19,13 @@ export function loadMessages(event){
             const header = document.getElementById('chat-header');
             header.setAttribute('idchat', idChat)
             header.innerHTML = `
-                    <div class="avatar-icon">
-                        <img src="${avatarUrl}" alt="avatar" class="avatar-icon">
+                    <div class="default-user-state">
+                        <div class="avatar-icon">
+                            <img src="${avatarUrl}" alt="avatar" class="avatar-icon">
+                        </div>
+                        <div class="state default-user">
+                            <div class="state-circle default-user ${receiverStatus}"></div>
+                        </div> 
                     </div>
                     <h1>${fullName}</h1>
             `;
