@@ -27,6 +27,7 @@ class Chat():
                 chat_data['receiverFirstName'] = receiver['firstName']
                 chat_data['receiverLastName'] = receiver['lastName']
                 chat_data['receiverUrlAvatar'] = receiver['urlAvatar']
+                chat_data['receiverStatus'] = receiver['status']
             chats.append(chat_data)
         return chats
     

@@ -35,9 +35,14 @@ function loadChats(){
         data.chats.forEach(chat => {
             var chatHtml = `
             <div id="loadMessages" idChat="${chat.id}" fullName="${chat.receiverFirstName} ${chat.receiverLastName}" receiverId="${chat.receiver}" class="btn-chat loadMessages">
-                <div class="avatar-icon">
-                    <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">
-                </div> 
+                <div class="default-user-state">
+                    <div class="avatar-icon">
+                        <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">
+                    </div>
+                    <div class="state default-user">
+                        <div class="state-circle default-user ${chat.receiverStatus}"></div>
+                    </div> 
+                </div>
                 <div>
                     <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>`
                     if (chat.lastMessage != undefined) {
@@ -61,49 +66,39 @@ function loadChats(){
 }
 
 export function addChat(event){
-    return new Promise((resolve, reject) => {
-        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-        const button = event.currentTarget;
-        const id = button.getAttribute('idFriend');
-        const messageData = {
-            friend: id,
-        };
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+    const button = event.currentTarget;
+    const id = button.getAttribute('idFriend');
+    const messageData = {
+        friend: id,
+    };
 
-        fetch(`${dominioBase}/chat/add/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            body: JSON.stringify(messageData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            closeOverlay()
-            console.log('Respuesta del servidor:', data);
-            resolve(data.idchat); // Asignar idchat después de recibir la respuesta
-        })
-        .catch(error => {
-            console.error('Error al añadir el chat:', error);
-            reject(error);
-        });
+    fetch(`${dominioBase}/chat/add/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(messageData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        closeOverlay()
+        console.log('Respuesta del servidor:', data);
+        if (!data.response) {
+            var idchat = data.idchat;
+            var element = document.querySelector(`[idChat="${idchat}"]`);
+            if (element) {
+                element.click();
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error al añadir el chat:', error);
     });
 }
 
 const friendsButtons = document.querySelectorAll('.friend-chat');
-
 friendsButtons.forEach(button => {
-    button.addEventListener('click',async function(event) {
-        try {
-            const idchat = await addChat(event);
-
-            var element = document.querySelector(`[idchat="${idchat}"]`);
-            if (element != null) {
-                element.click();
-            }
-            closeOverlay();
-        } catch (error) {
-            console.error('Error al procesar el chat:', error);
-        }
-    });
+    button.addEventListener('click', addChat);
 });

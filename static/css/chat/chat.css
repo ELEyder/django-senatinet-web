@@ -278,3 +278,32 @@ label.file-media {
 label.file-media:hover {
     background-color: var(--white-secondary);
 }
+
+/* Status  */
+.default-user-state{
+    position: relative;
+}
+.state .default-user {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 10px;
+}
+.state-circle.default-user {
+    width: 15px;
+    height: 15px;
+}
+.state-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px 0 0;
+}
+.Disconected {
+    background-color: rgb(143, 143, 143);
+}
+
+
+.Online {
+    background-color: rgb(0, 255, 0);
+}
