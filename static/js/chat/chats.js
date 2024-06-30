@@ -5,27 +5,21 @@ const dominioBase = window.location.origin;
 
 // Changes Realtime
 db.collection('chats').onSnapshot(snapshot => {
-    // Llamar a la función loadChats dentro de la función de callback
     loadChats()
-    .then(() => {
-        snapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                var idchat = change.doc.id;
-                var element = document.querySelector(`[idChat="${idchat}"]`);
-                if (element) {
-                    element.click();
-                }
-                closeOverlay();
+    snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+            var idchat = change.doc.id;
+            var element = document.querySelector(`[idChat="${idchat}"]`);
+            if (element) {
+                element.click();
             }
-        });
-    })
-    .catch(error => {
-        console.error('Error al cargar los chats y procesar cambios:', error);
+            closeOverlay();
+        }
     });
 });
 
 function loadChats(){
-    return fetch(`${dominioBase}/chat/get`, {
+    fetch(`${dominioBase}/chat/get`, {
         method: 'GET'
     })
     .then(response => response.json())
@@ -65,7 +59,7 @@ function loadChats(){
     });
 }
 
-export function addChat(event){
+function addChat(event){
     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     const button = event.currentTarget;
     const id = button.getAttribute('idFriend');

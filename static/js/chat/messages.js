@@ -2,167 +2,187 @@ import { db } from '../firebaseConfig.js';
 
 const dominioBase = window.location.origin;
 
+const idUser = document.querySelector('[name="idUser"]').value;
+
+db.collection(`chats`).where('members', 'array-contains',  idUser).onSnapshot(snapshot => {
+    snapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+    });
+    alert('cambio el chat')
+    loadMessages();
+});
+
 export function loadMessages(event){
-    var button = event.currentTarget;
-    var idChat = button.getAttribute('idchat')
-    var fullName = button.getAttribute('fullname')
-    var avatarUrl = button.getElementsByTagName('img')[0].getAttribute('src')
-    var receiverId = button.getAttribute('receiverid')
-    var receiverStatus = button.getAttribute('receiverStatus')
+    const button = event.currentTarget;
+    var id = button.getAttribute('idchat')
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+    const body = {
+        id : id,
+    };
+    fetch(`${dominioBase}/chat/get/messages/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(body),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        const messagesDiv = document.getElementById('chat-details');
+        const header = document.getElementById('chat-header');
+        
+        var avatarUrl = button.getElementsByTagName('img')[0].getAttribute('src')
+        var receiverStatus = button.getAttribute('receiverStatus')
+        var fullName = button.getAttribute('fullname')
+        var receiverId = button.getAttribute('receiverId')
 
-    var info = document.getElementById('info')
-    var input = document.getElementById('input-chat')
-    var send = document.getElementById('send')
-        db.collection(`chats/${idChat}/messages`).orderBy('date')
-        .onSnapshot(snapshot => {
-            const messagesDiv = document.getElementById('chat-details');
-            const header = document.getElementById('chat-header');
-            header.setAttribute('idchat', idChat)
-            header.innerHTML = `
-                    <div class="default-user-state">
-                        <div class="avatar-icon">
-                            <img src="${avatarUrl}" alt="avatar" class="avatar-icon">
-                        </div>
-                        <div class="state default-user">
-                            <div class="state-circle default-user ${receiverStatus}"></div>
-                        </div> 
+        var input = document.getElementById('input-chat')
+        // HEADER CHAT DATA
+        header.setAttribute('idchat', data.id)
+        header.innerHTML = `
+                <div class="default-user-state">
+                    <div class="avatar-icon">
+                        <img src="${avatarUrl}" alt="avatar" class="avatar-icon">
                     </div>
-                    <h1>${fullName}</h1>
-            `;
-            messagesDiv.innerHTML = ``
-            snapshot.forEach(doc => {
-                const message = doc.data();
-                const messageDate = message.date.toDate();
-                var horas = messageDate.getHours(); // Obtiene las horas (formato de 0 a 23)
-                var minutos = messageDate.getMinutes();
-                var messageHTML = ''
-                if (message.author == receiverId) {
-                    messageHTML += `
-                    <div class="message-row">
-                        <div class="message left">
-                        `
-                        if (message.urlMedia != undefined) {
-                            if (message.typeMedia == 'img') {
-                                messageHTML += `
-                                <div>
-                                        <div class="media">
-                                            <img src="${message.urlMedia}" class="media">
-                                        </div>
+                    <div class="state default-user">
+                        <div class="state-circle default-user ${receiverStatus}"></div>
+                    </div>
+                </div>
+                <h1>${fullName}</h1>
+        `;
+        // Clean Message Div
+        messagesDiv.innerHTML = ``
+        data.messages.forEach(message => {
+            let date = new Date(message.date);
+            // Extraer la hora y los minutos
+            let horas = date.getUTCHours(); // Usar getUTCHours() para obtener la hora en UTC
+            let minutos = date.getUTCMinutes(); 
+            var messageHTML = ''
+            if (message.author == receiverId) {
+                messageHTML += `
+                <div class="message-row">
+                    <div class="message left">
+                    `
+                    if (message.urlMedia != undefined) {
+                        if (message.typeMedia == 'img') {
+                            messageHTML += `
+                            <div>
+                                    <div class="media">
+                                        <img src="${message.urlMedia}" class="media">
                                     </div>
-                                `
-                            }
-                            else {
-                                messageHTML += `
-                                <div>
-                                        <div class="media">
-                                <video controls class="media">
-                                    <source class="media" src="${message.urlMedia}" type="video/mp4">
-                                    <source class="media" src="${message.urlMedia}" type="video/avi">
-                                    Tu navegador no soporta la reproducción de videos.
-                                </video>
                                 </div>
-                                </div>
-                                `
-
-                            }
+                            `
                         }
+                        else {
+                            messageHTML += `
+                            <div>
+                                    <div class="media">
+                            <video controls class="media">
+                                <source class="media" src="${message.urlMedia}" type="video/mp4">
+                                <source class="media" src="${message.urlMedia}" type="video/avi">
+                                Tu navegador no soporta la reproducción de videos.
+                            </video>
+                            </div>
+                            </div>
+                            `
+
+                        }
+                    }
+                        
+                messageHTML += `
+                        <div class="message-body">
+                            <div class="content">
+                                ${message.content}
+                            </div>
+                            <div class="date">
+                                ${horas}:${minutos}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `
+            } else {
+                messageHTML += `
+                <div class="message-row">
+                    <div class="message right">
+                    `
+                    if (message.urlMedia != undefined) {
+                        if (message.typeMedia == 'img') {
+                            messageHTML += `
+                            <div>
+                                    <div class="media">
+                                        <img src="${message.urlMedia}" class="media">
+                                    </div>
+                                </div>
+                            `
+                        }
+                        else {
+                            messageHTML += `
+                            <div>
+                                    <div class="media">
+                            <video controls class="media">
+                                <source class="media" src="${message.urlMedia}" type="video/mp4">
+                                <source class="media" src="${message.urlMedia}" type="video/avi">
+                                Tu navegador no soporta la reproducción de videos.
+                            </video>
+                            </div>
+                            </div>
+                            `
+
+                        }
+                    }
                             
                     messageHTML += `
-                            <div class="message-body">
-                                <div class="content">
-                                    ${message.content}
-                                </div>
-                                <div class="date">
-                                    ${horas}:${minutos}
-                                </div>
+                        <div class="message-body">
+                            <div class="content">
+                                ${message.content}
+                            </div>
+                            <div class="date">
+                                ${horas}:${minutos}
                             </div>
                         </div>
                     </div>
-                    `
-                } else {
-                    messageHTML += `
-                    <div class="message-row">
-                        <div class="message right">
-                        `
-                        if (message.urlMedia != undefined) {
-                            if (message.typeMedia == 'img') {
-                                messageHTML += `
-                                <div>
-                                        <div class="media">
-                                            <img src="${message.urlMedia}" class="media">
-                                        </div>
-                                    </div>
-                                `
-                            }
-                            else {
-                                messageHTML += `
-                                <div>
-                                        <div class="media">
-                                <video controls class="media">
-                                    <source class="media" src="${message.urlMedia}" type="video/mp4">
-                                    <source class="media" src="${message.urlMedia}" type="video/avi">
-                                    Tu navegador no soporta la reproducción de videos.
-                                </video>
-                                </div>
-                                </div>
-                                `
-
-                            }
-                        }
-                                
-                        messageHTML += `
-                            <div class="message-body">
-                                <div class="content">
-                                    ${message.content}
-                                </div>
-                                <div class="date">
-                                    ${horas}:${minutos}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                }
-                messagesDiv.innerHTML += messageHTML
-            });
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            info.style.display = 'none'
-            input.style.display = 'flex'
-            send.setAttribute('idchat',idChat)
-            send.setAttribute('fullname',fullName)
-            send.setAttribute('receiverid',receiverId)
-        }, error => {
-            console.error('Error al cargar los mensajes:', error);
+                </div>
+                `
+            }
+            messagesDiv.innerHTML += messageHTML
         });
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        info.style.display = 'none'
+        input.style.display = 'flex'
+        send.setAttribute('idchat',data.id)
+        send.setAttribute('fullname',fullName)
+        send.setAttribute('receiverid',receiverId)
+    })
 }
 
-export function sendMessage(){
-    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-    const dominioBase = window.location.origin;
 
+export function addMessages(){
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     const id = document.getElementById('chat-header').getAttribute('idchat');
     var input_content = document.getElementById('message-input')
     var content = input_content.value
 
-    const archivoInput = document.getElementById('input-media');
-    const media = archivoInput.files[0];
+    const mediaInput = document.getElementById('input-media');
+    const media = mediaInput.files[0];
     const formData = new FormData();
+    formData.append('id', id);
     formData.append('content', content);
-
     formData.append('media', media);
 
     
-    fetch(`${dominioBase}/chat/${id}/send/`, {
+    fetch(`${dominioBase}/chat/add/messages/`, {
         method: 'POST',
         headers: {
             'X-CSRFToken': csrfToken,
         },
         body: formData,
     })
-    .then(response => {
-        console.log('Respuesta del servidor:', response);
-        input_content.value = ""
-        archivoInput.value = null
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
     })
     .catch(error => {
         console.error('Error al enviar el mensaje:', error);
@@ -176,4 +196,4 @@ document.getElementById("message-input").addEventListener("keyup", function(even
         document.getElementById("send").click(); // Simula un clic en el botón
       }
   });
-document.getElementById("send").addEventListener("click", sendMessage)
+document.getElementById("send").addEventListener("click", addMessages)

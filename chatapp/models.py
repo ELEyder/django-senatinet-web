@@ -102,3 +102,48 @@ class Chat():
             'idchat' : idChat
         }
         
+class Messages():
+    @staticmethod
+    def getMessagesById(id):         
+        messages_data = db.collection(f'chats/{id}/messages').order_by('date', direction=firestore.Query.DESCENDING).stream()
+        messages = []
+        for message in messages_data:
+            message_data = message.to_dict()
+            messages.append(message_data)
+        return messages
+    
+    @staticmethod
+    def addMessage(id, author, content, media=None):
+        date = firestore.SERVER_TIMESTAMP
+        data = {
+            'author' : author,
+            'content' : content,
+            'date' : date
+        }
+        firstName = db.collection('users').document(author).get().to_dict().get('firstName')
+        lastMessage = firstName + ': ' + content
+        db.collection('chats').document(id).update({
+            'lastMessage' : lastMessage
+        })
+        ref = db.collection(f'chats/{id}/messages').add(data)
+        idMessage = ref[1].id
+        doc = db.collection(f'chats/{id}/messages').document(idMessage)
+        if (media != None):
+            fs = FileSystemStorage()
+            typeMedia = 'img'
+            if 'image/jpeg' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.jpg')
+            elif 'image/gif' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.gif')
+            elif 'video/mp4' in  media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'chats',id, idMessage + '.mp4')
+                typeMedia = 'video'
+            else:
+                return
+            name = fs.save(location, media)
+            urlMedia = fs.url(name)
+            data = {
+                'urlMedia': urlMedia,
+                'typeMedia': typeMedia,
+            }
+            doc.update(data)
