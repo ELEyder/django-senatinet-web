@@ -1,8 +1,6 @@
-import { firebaseConfig } from '../firebaseConfig.js';
-firebase.initializeApp(firebaseConfig);
+import { db } from '../firebaseConfig.js';
 
-// Obtiene una referencia a la colección de mensajes
-const db = firebase.firestore();
+const dominioBase = window.location.origin;
 
 export function loadMessages(event){
     var button = event.currentTarget;
@@ -132,7 +130,7 @@ export function loadMessages(event){
         });
 }
 
-export function sendMensaje(){
+export function sendMessage(){
     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     const dominioBase = window.location.origin;
 
@@ -165,87 +163,11 @@ export function sendMensaje(){
     });
 }
 
+// Send message with Enter
 document.getElementById("message-input").addEventListener("keyup", function(event) {
     if (event.key === "Enter") { // Verifica si la tecla presionada es "Enter"
         event.preventDefault(); // Evita que el formulario se envíe
         document.getElementById("send").click(); // Simula un clic en el botón
       }
   });
-
-export function addChat(event){
-    const dominioBase = window.location.origin;
-    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-    var button = event.currentTarget;
-    var id = button.getAttribute('idFriend')
-    const messageData = {
-        friend: id,
-    };
-    db.collection(`chats`)
-    fetch(`${dominioBase}/chat/add/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify(messageData),
-    })
-    .then(response => response.json())
-    .then(data => {
-        closeOverlay()
-        console.log('Respuesta del servidor:', data);
-        var element = document.querySelector(`[idchat="${data.idchat}"]`);
-        if (element != null) {
-            element.click()
-        }
-        closeOverlay()
-    })
-    .catch(error => {
-        console.error('Error al enviar el mensaje:', error);
-    });
-}
-
-export function loadChats(){
-    const dominioBase = window.location.origin;
-    fetch(`${dominioBase}/chat/get`, {
-        method: 'GET'
-    })
-    .then(response => response.json()) // Procesar la respuesta como JSON
-    .then(data => {
-        var chatsBody = document.getElementById('chats-body')
-        chatsBody.innerHTML = ''
-        data.chats.forEach(chat => {
-            var chatHtml = `
-            <div idChat="${chat.id}" fullName="${chat.receiverFirstName} ${chat.receiverLastName}" receiverId="${chat.receiver}" class="btn-chat" onclick="loadMessages(event)">
-                <div class="avatar-icon">
-                    <img src="${chat.receiverUrlAvatar}" alt="avatar" class="avatar-icon">
-                </div> 
-                <div>
-                    <p>${chat.receiverFirstName} ${chat.receiverLastName}</p>`
-                    if (chat.lastMessage != undefined) {
-                        chatHtml += `<p>${chat.lastMessage}</p>`
-                    }
-                `</div> 
-            </div>
-            `;
-            chatsBody.innerHTML +=chatHtml
-        });
-        console.log('Respuesta del servidor:', data);
-    })
-    .catch(error => {
-        console.error('Error al enviar el mensaje:', error);
-    });
-}
-db.collection(`chats`).onSnapshot(snapshot => {
-    loadChats()
-    snapshot.docChanges().forEach(change => {
-        if (change.type == 'added') {
-            var idchat =change.doc.id
-            var element = document.querySelector(`[idchat="${idchat}"]`);
-            if (element != null) {
-                element.click()
-
-            }
-            closeOverlay()
-        }
-    });
-})
+document.getElementById("send").addEventListener("click", sendMessage)
