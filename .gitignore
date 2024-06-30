@@ -9,3 +9,5 @@ db.sqlite3
 # /media/avatars
 /media/chats
 /media/posts
+
+/static/js/firebaseConfig.js

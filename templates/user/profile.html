@@ -70,21 +70,23 @@
                     <a class="btn-post-option" idPost="{{ post.id }}" onclick="goComment(this);">Comment</a>
                     <a class="btn-post-option"href="#">Searchs: {{ post.searchs }}</a>
                 </div>
+                <div class="comments">
                 {% for comment in post.comments %}
                     <div class="comment">
-                        <div class="post-header">
+                        <div class="comment-header">
                             <a href="{% url 'viewUser' username=comment.authorUsername %}">
-                                <div class="avatar-icon">
-                                    <img src="{{ comment.authorAvatar }}" alt="avatar" class="avatar-icon"></div>
+                                <div class="avatar-icon-comment">
+                                    <img src="{{ comment.authorAvatar }}" alt="avatar" class="avatar-icon-comment">
+                                </div>
                             </a>
-                            <div class="comment-body">
+                        </div>
+                        <div class="comment-body">
                                 <a href="{% url 'viewUser' username=comment.authorUsername %}" class="author-name">{{ comment.authorName }}</a>
                                 <p class="content">{{ comment.content }}</p>
-                            </div>
                         </div>
                     </div>
                 {% endfor %}
-            
+                </div>
                 <form class="prepare-coment" action="{% url 'comment' %}" method="POST">
                     {% csrf_token %}
                     <input type="text" class="content" name="comment" id="{{ post.id }}" placeholder="Comentario" required>

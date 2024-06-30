@@ -1,3 +1,6 @@
+@import url('comment.css');
+
+
 section.posts {
     width: 460px;
     display: flex;
@@ -151,48 +154,4 @@ p.content {
 
 .active {
     color: var(--color-primary);
-}
-
-.comment-body {
-    background-color: var(--white-secondary);
-    padding: 10px;
-    border-radius: 20px;
-    width: 100%;
-}
-
-.author-name {
-    font-weight: 800;
-}
-.prepare-coment {
-    height: 60px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-svg.postear {
-    width: 25px;
-    height: 25px;
-    stroke: var(--color-primary);
-    pointer-events: none;
-}
-
-.btn-comment {
-    background-color: var(--color-secondary);
-    border: 0;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px 10px 20px;
-    cursor: pointer;
-}
-
-.btn-comment:hover {
-    background-color: var(--color-primary);
-}
-
-.btn-comment:hover .postear{
-    stroke: white;
-    background-color: var(--color-primary);
 }

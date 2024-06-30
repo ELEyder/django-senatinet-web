@@ -1,18 +1,10 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyARwSYWD_euCV_2qQ4sL2S6Vrj_p_b0j_I",
-    authDomain: "mediasenati.firebaseapp.com",
-    projectId: "mediasenati",
-    storageBucket: "mediasenati.appspot.com",
-    messagingSenderId: "147613346111",
-    appId: "1:147613346111:web:a349302d624f17b5580b8a"
-};
-
+import { firebaseConfig } from '../firebaseConfig.js';
 firebase.initializeApp(firebaseConfig);
 
 // Obtiene una referencia a la colección de mensajes
 const db = firebase.firestore();
 
-function loadMessages(event){
+export function loadMessages(event){
     var button = event.currentTarget;
     var idChat = button.getAttribute('idchat')
     var fullName = button.getAttribute('fullname')
@@ -140,7 +132,7 @@ function loadMessages(event){
         });
 }
 
-function sendMensaje(){
+export function sendMensaje(){
     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     const dominioBase = window.location.origin;
 
@@ -180,7 +172,7 @@ document.getElementById("message-input").addEventListener("keyup", function(even
       }
   });
 
-function addChat(event){
+export function addChat(event){
     const dominioBase = window.location.origin;
     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
     var button = event.currentTarget;
@@ -212,7 +204,7 @@ function addChat(event){
     });
 }
 
-function loadChats(){
+export function loadChats(){
     const dominioBase = window.location.origin;
     fetch(`${dominioBase}/chat/get`, {
         method: 'GET'
@@ -257,11 +249,3 @@ db.collection(`chats`).onSnapshot(snapshot => {
         }
     });
 })
-
-function showOverlay(){
-    var overlay = document.getElementById('overlay')
-    overlay.style.width = '400px'
-}
-function closeOverlay(){
-    overlay.style.width = '0px'
-}

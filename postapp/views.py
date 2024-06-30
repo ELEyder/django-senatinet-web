@@ -19,8 +19,9 @@ def postear(request):
             media = request.FILES['media']
             Post.addPost(author, action, content, media)
             return redirect('home')
-        Post.addPost(author, action, content)
-        return redirect('home')
+        response = Post.addPost(author, action, content)
+        if (response): return redirect('home')
+        else : return redirect('home')
     return redirect('home')
 
 @firebase_login_required

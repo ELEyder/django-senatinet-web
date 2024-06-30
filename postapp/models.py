@@ -30,54 +30,56 @@ class Post():
             'privacy' : "Public",
             'privacyD' : []
         }
+        # Post added
         doc = db.collection('posts').add(data)
-        id_post = doc[1].id
-        doc = db.collection('posts').document(id_post)
+        # If media exist
         if media != None:
+            id_post = doc[1].id
+            doc_ref = db.collection('posts').document(id_post)
             typeMedia = 'img'
             if 'image/jpeg' in media.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.jpg')
+            elif 'image/png' in media.content_type:
+                location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.png')
             elif 'image/gif' in media.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.gif')
             elif 'video/mp4' in  media.content_type:
                 location = os.path.join(settings.MEDIA_ROOT, 'posts', id_post + '.mp4')
                 typeMedia = 'video'
             else:
-                return
+                return True
             name = fs.save(location, media)
             urlMedia = fs.url(name)
             data = {
                 'urlMedia': urlMedia,
                 'typeMedia': typeMedia,
             }
-            doc.update(data)
-        return
+            doc_ref.update(data)
+        return True
             
     @staticmethod
     def getPosts():
         posts_docs = db.collection('posts').order_by('date', direction=firestore.Query.DESCENDING).get()
-        users_docs = db.collection('users').get()
         posts_data = []
         for doc in posts_docs:
             post_data = doc.to_dict()
+            user_data = db.collection('users').document(post_data['author']).get().to_dict()
+
             post_data['id'] = doc.id
             # Obtener la zona horaria local del usuario
             local_timezone = get_localzone()
-
             # Obtener la fecha y hora actuales en la zona horaria local del usuario
             now_local = datetime.now(local_timezone)
-
             # Obtener el desplazamiento horario de UTC para la zona horaria local del usuario
             utc_offset_hours = local_timezone.utcoffset(now_local)
             post_data['date'] = post_data['date'] + utc_offset_hours
-            for docUser in users_docs:
-                if docUser.id == post_data['author']:
-                    data = docUser.to_dict()
-                    post_data['authorName'] = data['firstName'] + ' ' + data['lastName']
-                    post_data['authorUsername'] = data['username']
-                    post_data['authorAvatar'] = data['urlAvatar']
+
+            post_data['authorName'] = user_data['firstName'] + ' ' + user_data['lastName']
+            post_data['authorUsername'] = user_data['username']
+            post_data['authorAvatar'] = user_data['urlAvatar']
             posts_data.append(post_data)
         return posts_data
+
     @staticmethod
     def getPostById(post_id):
         post_ref = db.collection('posts').document(post_id)
@@ -90,22 +92,17 @@ class Post():
     
     @staticmethod
     def getPostsByAuthorId(author_id):
-        posts_ref = db.collection('posts')
-        users_ref = db.collection('users')
-        posts_docs = posts_ref.get()
-        users_docs = users_ref.get()
+        posts_docs = db.collection('posts').where('author', '==', author_id).get()
+        user_doc = db.collection('users').document(author_id).get().to_dict()
+
         posts_data = []
         for doc in posts_docs:
             post_data = doc.to_dict()
-            for docUser in users_docs:
-                if docUser.id == post_data['author']:
-                    data = docUser.to_dict()
-                    post_data['authorName'] = data['firstName'] + ' ' + data['lastName']
-                    post_data['authorUsername'] = data['username']
-                    post_data['authorAvatar'] = data['urlAvatar']
+            post_data['authorName'] = user_doc['firstName'] + ' ' + user_doc['lastName']
+            post_data['authorUsername'] = user_doc['username']
+            post_data['authorAvatar'] = user_doc['urlAvatar']
             post_data['id'] = doc.id
-            if post_data['author'] == author_id:
-                posts_data.append(post_data)
+            posts_data.append(post_data)
         return posts_data
     
     @staticmethod
