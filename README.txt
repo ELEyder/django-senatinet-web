@@ -16,3 +16,5 @@ python manage.py runserver
 
     git fetch origin
     git reset --hard origin/main
+
+    python -m venv env
