@@ -1,10 +1,15 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import redirect, HttpResponse 
 from senatiweb.decorators import firebase_login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from postapp.models import Post
 from userapp.models import DefaultUser
 import os
 # Create your views here.
+
+def getPosts(request):
+    postsData = Post.getPosts()
+    return JsonResponse(postsData, safe = False)
+
 @firebase_login_required
 def postear(request):
     idAuth = request.session.get('user_id')

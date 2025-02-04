@@ -22,12 +22,12 @@ from django.conf.urls.static import static
 from .views import *
 
 urlpatterns = [
+    path('posts/', include('postapp.urls')),
     path('login/', login, name='login'),
     path('signup/', signup, name='signup'),
     path('', index, name='home'),
     path('home/', index, name='home'),
     path('user/', include('userapp.urls')),
-    path('post/', include('postapp.urls')),
     path('logout/', exit, name='logout'),
     path('chat/', include('chatapp.urls')),
 ]
